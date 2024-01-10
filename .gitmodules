@@ -1,0 +1,33 @@
+[submodule "modules/glew"]
+	path = modules/glew
+	url = https://github.com/nigels-com/glew.git
+[submodule "modules/glibc"]
+	path = modules/glibc
+	url = https://sourceware.org/git/glibc.git
+[submodule "modules/imgui"]
+	path = modules/imgui
+	url = https://github.com/ocornut/imgui.git
+[submodule "modules/llvm-project"]
+	path = modules/llvm-project
+	url = https://github.com/llvm/llvm-project.git
+[submodule "modules/openal-soft"]
+	path = modules/openal-soft
+	url = https://github.com/kcat/openal-soft.git
+[submodule "modules/SDL"]
+	path = modules/SDL
+	url = https://github.com/libsdl-org/SDL.git
+[submodule "modules/SDL_image"]
+	path = modules/SDL_image
+	url = https://github.com/libsdl-org/SDL_image.git
+[submodule "modules/SDL_ttf"]
+	path = modules/SDL_ttf
+	url = https://github.com/libsdl-org/SDL_ttf.git
+[submodule "modules/stb"]
+	path = modules/stb
+	url = https://github.com/nothings/stb.git
+[submodule "modules/xxHash"]
+	path = modules/xxHash
+	url = https://github.com/Cyan4973/xxHash.git
+[submodule "modules/zstd"]
+	path = modules/zstd
+	url = https://github.com/facebook/zstd.git

@@ -1,0 +1,58 @@
+diff --git a/.gitignore b/.gitignore
+index 4a8212b5..270614be 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -7,3 +7,17 @@ win64build
+ 
+ ## qt-creator
+ CMakeLists.txt.user*
++
++.suo
++*.log
++*.tlog
++*.obj
++*.sbr
++*.bsc
++*.ipch
++*.iobj
++*.ipdb
++*.recipe
++*.exp
++*.pdb
++*.pch
+\ No newline at end of file
+diff --git a/al/error.cpp b/al/error.cpp
+index afa7019a..259f450a 100644
+--- a/al/error.cpp
++++ b/al/error.cpp
+@@ -73,7 +73,7 @@ void ALCcontext::setError(ALenum errorCode, const char *msg, ...)
+         if(IsDebuggerPresent())
+             DebugBreak();
+ #elif defined(SIGTRAP)
+-        raise(SIGTRAP);
++        //raise(SIGTRAP);
+ #endif
+     }
+ 
+@@ -95,7 +95,7 @@ START_API_FUNC
+             if(IsDebuggerPresent())
+                 DebugBreak();
+ #elif defined(SIGTRAP)
+-            raise(SIGTRAP);
++            //raise(SIGTRAP);
+ #endif
+         }
+         return deferror;
+diff --git a/alc/alc.cpp b/alc/alc.cpp
+index af8ff55d..f25bb6d8 100644
+--- a/alc/alc.cpp
++++ b/alc/alc.cpp
+@@ -1634,7 +1634,7 @@ void alcSetError(ALCdevice *device, ALCenum errorCode)
+         if(IsDebuggerPresent())
+             DebugBreak();
+ #elif defined(SIGTRAP)
+-        raise(SIGTRAP);
++        //raise(SIGTRAP);
+ #endif
+     }
+ 

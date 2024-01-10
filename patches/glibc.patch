@@ -1,0 +1,18 @@
+diff --git a/assert/assert.h b/assert/assert.h
+index 22f019537c..0b7c902973 100644
+--- a/assert/assert.h
++++ b/assert/assert.h
+@@ -85,7 +85,12 @@ __END_DECLS
+ /* When possible, define assert so that it does not add extra
+    parentheses around EXPR.  Otherwise, those added parentheses would
+    suppress warnings we'd expect to be detected by gcc's -Wparentheses.  */
+-# if !defined __GNUC__ || defined __STRICT_ANSI__
++# if defined __cplusplus
++#  define assert(expr)							\
++     (static_cast <bool> (expr)						\
++      ? void (0)							\
++      : __assert_fail (#expr, __FILE__, __LINE__, __ASSERT_FUNCTION))
++# elif !defined __GNUC__ || defined __STRICT_ANSI__
+ #  define assert(expr)							\
+     ((expr)								\
+      ? __ASSERT_VOID_CAST (0)						\

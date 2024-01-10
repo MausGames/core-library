@@ -1,0 +1,97 @@
+diff --git a/.gitignore b/.gitignore
+index 904dd22..7aa6613 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -18,3 +18,17 @@ xcuserdata
+ SDL2_ttf.pc
+ glfont
+ showfont
++.vs
++.suo
++*.log
++*.tlog
++*.obj
++*.sbr
++*.bsc
++*.ipch
++*.iobj
++*.ipdb
++*.recipe
++*.exp
++*.pdb
++*.pch
+\ No newline at end of file
+diff --git a/VisualC/SDL_ttf.vcxproj b/VisualC/SDL_ttf.vcxproj
+index c016d27..e86bc23 100644
+--- a/VisualC/SDL_ttf.vcxproj
++++ b/VisualC/SDL_ttf.vcxproj
+@@ -28,6 +28,7 @@
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+     <ConfigurationType>DynamicLibrary</ConfigurationType>
+     <PlatformToolset Condition="'$(VisualStudioVersion)' != '10.0'">$(DefaultPlatformToolset)</PlatformToolset>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+     <ConfigurationType>DynamicLibrary</ConfigurationType>
+@@ -36,6 +37,7 @@
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+     <ConfigurationType>DynamicLibrary</ConfigurationType>
+     <PlatformToolset Condition="'$(VisualStudioVersion)' != '10.0'">$(DefaultPlatformToolset)</PlatformToolset>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+     <ConfigurationType>DynamicLibrary</ConfigurationType>
+@@ -169,7 +171,11 @@
+       <PreprocessorDefinitions>DLL_EXPORT;WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;TTF_USE_HARFBUZZ=1;FT_CONFIG_OPTION_USE_HARFBUZZ;FT2_BUILD_LIBRARY;HAVE_FREETYPE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+       <WarningLevel>Level3</WarningLevel>
+-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
++      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
++      <Optimization>MinSpace</Optimization>
++      <BufferSecurityCheck>false</BufferSecurityCheck>
++      <FunctionLevelLinking>true</FunctionLevelLinking>
++      <AdditionalOptions>/Gw %(AdditionalOptions)</AdditionalOptions>
+     </ClCompile>
+     <ResourceCompile>
+       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+@@ -178,6 +184,8 @@
+       <AdditionalDependencies>SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>external\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <SubSystem>Windows</SubSystem>
++      <OptimizeReferences>true</OptimizeReferences>
++      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+     </Link>
+   </ItemDefinitionGroup>
+   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+@@ -194,6 +202,10 @@
+       <PreprocessorDefinitions>DLL_EXPORT;WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;TTF_USE_HARFBUZZ=1;FT_CONFIG_OPTION_USE_HARFBUZZ;FT2_BUILD_LIBRARY;HAVE_FREETYPE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+       <WarningLevel>Level3</WarningLevel>
++      <Optimization>MinSpace</Optimization>
++      <BufferSecurityCheck>false</BufferSecurityCheck>
++      <FunctionLevelLinking>true</FunctionLevelLinking>
++      <AdditionalOptions>/Gw %(AdditionalOptions)</AdditionalOptions>
+     </ClCompile>
+     <ResourceCompile>
+       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+@@ -202,6 +214,8 @@
+       <AdditionalDependencies>SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>external\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <SubSystem>Windows</SubSystem>
++      <OptimizeReferences>true</OptimizeReferences>
++      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+     </Link>
+   </ItemDefinitionGroup>
+   <ItemGroup>
+diff --git a/external/freetype b/external/freetype
+--- a/external/freetype
++++ b/external/freetype
+@@ -1 +1 @@
+-Subproject commit 6fc77cee03e078e97afcee0c0e06a2d3274b9a29
++Subproject commit 6fc77cee03e078e97afcee0c0e06a2d3274b9a29-dirty
+diff --git a/external/harfbuzz b/external/harfbuzz
+--- a/external/harfbuzz
++++ b/external/harfbuzz
+@@ -1 +1 @@
+-Subproject commit 6022fe2f68d028ee178284f297b3902ffdf65b03
++Subproject commit 6022fe2f68d028ee178284f297b3902ffdf65b03-dirty
