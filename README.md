@@ -1,6 +1,6 @@
 # Core Library
 
-Support repository of the **Core Engine** ([GitHub](https://github.com/MausGames/core-engine), [GitLab](https://gitlab.com/MausGames/core-engine)), which references all important dependencies, and includes custom modifications and build-scripts.
+This repository is part of the **Core Engine** ([GitHub](https://github.com/MausGames/core-engine), [GitLab](https://gitlab.com/MausGames/core-engine)). It references all important dependencies and includes custom modifications and build-scripts.
 
 **Main Dependencies**
 - [glew](https://github.com/nigels-com/glew) (BSD-3)
@@ -15,7 +15,7 @@ Support repository of the **Core Engine** ([GitHub](https://github.com/MausGames
 - [xxhash](https://github.com/Cyan4973/xxHash) (BSD-3)
 - [zstd](https://github.com/facebook/zstd) (BSD-3)
 
-**Other Dependencies**
+**Optional Dependencies**
 - [angle](https://chromium.googlesource.com/angle/angle) (BSD-3)
 - [glibc](https://sourceware.org/git/glibc.git) (LGPL-2)
 - [libc++](https://github.com/llvm/llvm-project) (Apache with LLVM exceptions)
