@@ -1,18 +1,23 @@
-diff --git a/assert/assert.h b/assert/assert.h
-index 22f019537c..0b7c902973 100644
---- a/assert/assert.h
-+++ b/assert/assert.h
-@@ -85,7 +85,12 @@ __END_DECLS
- /* When possible, define assert so that it does not add extra
-    parentheses around EXPR.  Otherwise, those added parentheses would
-    suppress warnings we'd expect to be detected by gcc's -Wparentheses.  */
--# if !defined __GNUC__ || defined __STRICT_ANSI__
-+# if defined __cplusplus
-+#  define assert(expr)							\
-+     (static_cast <bool> (expr)						\
-+      ? void (0)							\
-+      : __assert_fail (#expr, __FILE__, __LINE__, __ASSERT_FUNCTION))
-+# elif !defined __GNUC__ || defined __STRICT_ANSI__
- #  define assert(expr)							\
-     ((expr)								\
-      ? __ASSERT_VOID_CAST (0)						\
+diff --git a/Makefile b/Makefile
+index d3f25a525a..dff2b11bd6 100644
+--- a/Makefile
++++ b/Makefile
+@@ -255,7 +255,17 @@ all-subdirs-targets := $(foreach dir,$(subdirs),\
+ # The action for each of those is to cd into the directory and make the
+ # target there.
+ $(all-subdirs-targets):
+-	$(MAKE) $(PARALLELMFLAGS) $(subdir-target-args) $(@F)
++	@if [ "$@" = "stdio-common/subdir_lib" ]; then \
++		echo "Skipping make command for $@"; \
++	elif [ "$@" = "stdio-common/others" ]; then \
++		echo "Skipping make command for $@"; \
++	elif [ "$@" = "stdio-common/subdir_install" ]; then \
++		touch stdio-common/stubs; \
++		echo "Skipping make command for $@"; \
++	else \
++		$(MAKE) $(PARALLELMFLAGS) $(subdir-target-args) $(@F); \
++	fi
++	# revert it once, then use it without deleting the build-folder
+ 
+ define subdir-target-args
+ subdir=$(@D)$(if $($(@D)-srcdir),\
