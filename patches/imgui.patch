@@ -1,0 +1,69 @@
+diff --git a/backends/imgui_impl_opengl3.cpp b/backends/imgui_impl_opengl3.cpp
+index a36a7ac27..b23cc2228 100644
+--- a/backends/imgui_impl_opengl3.cpp
++++ b/backends/imgui_impl_opengl3.cpp
+@@ -142,9 +142,9 @@
+ #include <GLES2/gl2.h>          // Use GL ES 2
+ #endif
+ #if defined(__EMSCRIPTEN__)
+-#ifndef GL_GLEXT_PROTOTYPES
+-#define GL_GLEXT_PROTOTYPES
+-#endif
++//#ifndef GL_GLEXT_PROTOTYPES
++//#define GL_GLEXT_PROTOTYPES
++//#endif
+ #include <GLES2/gl2ext.h>
+ #endif
+ #elif defined(IMGUI_IMPL_OPENGL_ES3)
+@@ -170,10 +170,10 @@
+ #define IMGUI_IMPL_OPENGL_USE_VERTEX_ARRAY
+ #elif defined(__EMSCRIPTEN__)
+ #define IMGUI_IMPL_OPENGL_USE_VERTEX_ARRAY
+-#define glBindVertexArray       glBindVertexArrayOES
+-#define glGenVertexArrays       glGenVertexArraysOES
+-#define glDeleteVertexArrays    glDeleteVertexArraysOES
+-#define GL_VERTEX_ARRAY_BINDING GL_VERTEX_ARRAY_BINDING_OES
++//#define glBindVertexArray       glBindVertexArrayOES
++//#define glGenVertexArrays       glGenVertexArraysOES
++//#define glDeleteVertexArrays    glDeleteVertexArraysOES
++//#define GL_VERTEX_ARRAY_BINDING GL_VERTEX_ARRAY_BINDING_OES
+ #endif
+ 
+ // Desktop GL 2.0+ has glPolygonMode() which GL ES and WebGL don't have.
+@@ -188,7 +188,7 @@
+ 
+ // Desktop GL 3.3+ and GL ES 3.0+ have glBindSampler()
+ #if !defined(IMGUI_IMPL_OPENGL_ES2) && (defined(IMGUI_IMPL_OPENGL_ES3) || defined(GL_VERSION_3_3))
+-#define IMGUI_IMPL_OPENGL_MAY_HAVE_BIND_SAMPLER
++//#define IMGUI_IMPL_OPENGL_MAY_HAVE_BIND_SAMPLER
+ #endif
+ 
+ // Desktop GL 3.1+ has GL_PRIMITIVE_RESTART state
+diff --git a/backends/imgui_impl_sdl2.cpp b/backends/imgui_impl_sdl2.cpp
+index 9f950bb17..f9d8d4337 100644
+--- a/backends/imgui_impl_sdl2.cpp
++++ b/backends/imgui_impl_sdl2.cpp
+@@ -87,8 +87,8 @@
+ #endif
+ 
+ // SDL
+-#include <SDL.h>
+-#include <SDL_syswm.h>
++#include <SDL2/SDL.h>
++#include <SDL2/SDL_syswm.h>
+ #if defined(__APPLE__)
+ #include <TargetConditionals.h>
+ #endif
+diff --git a/imconfig.h b/imconfig.h
+index d556cbaf1..13166d820 100644
+--- a/imconfig.h
++++ b/imconfig.h
+@@ -27,7 +27,7 @@
+ //#define IMGUI_API __declspec( dllimport )
+ 
+ //---- Don't define obsolete functions/enums/behaviors. Consider enabling from time to time after updating to clean your code of obsolete function/names.
+-//#define IMGUI_DISABLE_OBSOLETE_FUNCTIONS
++#define IMGUI_DISABLE_OBSOLETE_FUNCTIONS
+ //#define IMGUI_DISABLE_OBSOLETE_KEYIO                      // 1.87+ disable legacy io.KeyMap[]+io.KeysDown[] in favor io.AddKeyEvent(). This is automatically done by IMGUI_DISABLE_OBSOLETE_FUNCTIONS.
+ 
+ //---- Disable all of Dear ImGui or don't implement standard windows/tools.

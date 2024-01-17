@@ -2,7 +2,7 @@
 
 _PATH_="$(dirname "$(realpath "$0")")"
 
-find "$_PATH_" -iname "*.patch" | while read file; do
+find "$_PATH_/../patches" -iname "*.patch" | while read file; do
 
     git -C "$_PATH_/../modules/$(basename "$file" .patch)" apply "$file"
 
