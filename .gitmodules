@@ -31,3 +31,12 @@
 [submodule "modules/zstd"]
 	path = modules/zstd
 	url = https://github.com/facebook/zstd.git
+[submodule "modules/ogg"]
+	path = modules/ogg
+	url = https://github.com/xiph/ogg.git
+[submodule "modules/opus"]
+	path = modules/opus
+	url = https://github.com/xiph/opus.git
+[submodule "modules/opusfile"]
+	path = modules/opusfile
+	url = https://github.com/xiph/opusfile.git
