@@ -3,10 +3,11 @@
 _PATH_="$(dirname "$(realpath "$0")")"
 
 _PREFIX_="$_PATH_/../output/glibc"
+_ROOT_="$_PATH_/../modules"
 
 export CFLAGS="-Os -msse3"
 
-cd "$_PATH_/../modules/glibc"
+cd "$_ROOT_/glibc"
 #rm -r build
 mkdir build
 cd build
