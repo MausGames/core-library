@@ -12,7 +12,7 @@ index d3f25a525a..dff2b11bd6 100644
 +	elif [ "$@" = "stdio-common/others" ]; then \
 +		echo "Skipping make command for $@"; \
 +	elif [ "$@" = "stdio-common/subdir_install" ]; then \
-+		touch stdio-common/stubs; \
++		touch build/stdio-common/stubs; \
 +		echo "Skipping make command for $@"; \
 +	else \
 +		$(MAKE) $(PARALLELMFLAGS) $(subdir-target-args) $(@F); \

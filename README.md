@@ -20,5 +20,7 @@ This repository is part of the **Core Engine** ([GitHub](https://github.com/Maus
 
 **Optional Dependencies**
 - [ANGLE](https://chromium.googlesource.com/angle/angle) (BSD-3)
+- [Epic Online Services SDK](https://dev.epicgames.com/sdk) (proprietary)
 - [glibc](https://sourceware.org/git/glibc.git) (LGPL-2)
 - [libc++](https://github.com/llvm/llvm-project) (Apache with LLVM exceptions)
+- [Steamworks SDK](https://partner.steamgames.com/doc/sdk) (proprietary)
