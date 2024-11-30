@@ -1,8 +1,8 @@
 diff --git a/.gitignore b/.gitignore
-index 4a8212b5..270614be 100644
+index 688980a5..891b527e 100644
 --- a/.gitignore
 +++ b/.gitignore
-@@ -7,3 +7,17 @@ win64build
+@@ -8,3 +8,17 @@ win64build
  
  ## qt-creator
  CMakeLists.txt.user*
@@ -22,10 +22,10 @@ index 4a8212b5..270614be 100644
 +*.pch
 \ No newline at end of file
 diff --git a/al/error.cpp b/al/error.cpp
-index afa7019a..259f450a 100644
+index 1ed82979..cd6f65a4 100644
 --- a/al/error.cpp
 +++ b/al/error.cpp
-@@ -73,7 +73,7 @@ void ALCcontext::setError(ALenum errorCode, const char *msg, ...)
+@@ -99,7 +99,7 @@ void ALCcontext::setError(ALenum errorCode, const char *msg, ...)
          if(IsDebuggerPresent())
              DebugBreak();
  #elif defined(SIGTRAP)
@@ -34,20 +34,20 @@ index afa7019a..259f450a 100644
  #endif
      }
  
-@@ -95,7 +95,7 @@ START_API_FUNC
-             if(IsDebuggerPresent())
-                 DebugBreak();
+@@ -142,7 +142,7 @@ AL_API auto AL_APIENTRY alGetError() noexcept -> ALenum
+         if(IsDebuggerPresent())
+             DebugBreak();
  #elif defined(SIGTRAP)
--            raise(SIGTRAP);
-+            //raise(SIGTRAP);
+-        raise(SIGTRAP);
++        //raise(SIGTRAP);
  #endif
-         }
-         return deferror;
+     }
+     return deferror;
 diff --git a/alc/alc.cpp b/alc/alc.cpp
-index af8ff55d..f25bb6d8 100644
+index fe304c3d..de392f38 100644
 --- a/alc/alc.cpp
 +++ b/alc/alc.cpp
-@@ -1634,7 +1634,7 @@ void alcSetError(ALCdevice *device, ALCenum errorCode)
+@@ -1966,7 +1966,7 @@ void alcSetError(ALCdevice *device, ALCenum errorCode)
          if(IsDebuggerPresent())
              DebugBreak();
  #elif defined(SIGTRAP)
@@ -56,3 +56,153 @@ index af8ff55d..f25bb6d8 100644
  #endif
      }
  
+diff --git a/alc/backends/wasapi.cpp b/alc/backends/wasapi.cpp
+index ee8116e4..afca578a 100644
+--- a/alc/backends/wasapi.cpp
++++ b/alc/backends/wasapi.cpp
+@@ -925,6 +925,55 @@ void TraceFormat(const char *msg, const WAVEFORMATEX *format)
+ }
+ 
+ 
++/* Duplicates the first sample of each sample frame to the second sample, at
++ * half volume. Essentially converting mono to stereo.
++ */
++template<typename T>
++void DuplicateSamples(al::span<BYTE> insamples, size_t step)
++{
++    auto samples = al::span{reinterpret_cast<T*>(insamples.data()), insamples.size()/sizeof(T)};
++    if constexpr(std::is_floating_point_v<T>)
++    {
++        for(size_t i{0};i < samples.size();i+=step)
++        {
++            const auto s = samples[i] * T{0.5};
++            samples[i+1] = samples[i] = s;
++        }
++    }
++    else if constexpr(std::is_signed_v<T>)
++    {
++        for(size_t i{0};i < samples.size();i+=step)
++        {
++            const auto s = samples[i] / 2;
++            samples[i+1] = samples[i] = T(s);
++        }
++    }
++    else
++    {
++        using ST = std::make_signed_t<T>;
++        static constexpr auto SignBit = T{1u << (sizeof(T)*8 - 1)};
++        for(size_t i{0};i < samples.size();i+=step)
++        {
++            const auto s = static_cast<ST>(samples[i]^SignBit) / 2;
++            samples[i+1] = samples[i] = T(s)^SignBit;
++        }
++    }
++}
++void DuplicateSamples(al::span<BYTE> insamples, DevFmtType sampletype, size_t step)
++{
++    switch(sampletype)
++    {
++    case DevFmtByte: return DuplicateSamples<char>(insamples, step);
++    case DevFmtUByte: return DuplicateSamples<unsigned char>(insamples, step);
++    case DevFmtShort: return DuplicateSamples<short>(insamples, step);
++    case DevFmtUShort: return DuplicateSamples<unsigned short>(insamples, step);
++    case DevFmtInt: return DuplicateSamples<int>(insamples, step);
++    case DevFmtUInt: return DuplicateSamples<unsigned int>(insamples, step);
++    case DevFmtFloat: return DuplicateSamples<float>(insamples, step);
++    }
++}
++
++
+ enum class MsgType {
+     OpenDevice,
+     ResetDevice,
+@@ -1141,6 +1190,7 @@ struct WasapiPlayback final : public BackendBase, WasapiProxy {
+     std::vector<char> mResampleBuffer{};
+     uint mBufferFilled{0};
+     SampleConverterPtr mResampler;
++    bool mMonoUpsample{false};
+ 
+     WAVEFORMATEXTENSIBLE mFormat{};
+     std::atomic<UINT32> mPadding{0u};
+@@ -1246,6 +1296,13 @@ FORCE_ALIGN int WasapiPlayback::mixerProc()
+                 mDevice->renderSamples(buffer, len, mFormat.Format.nChannels);
+                 mPadding.store(written + len, std::memory_order_relaxed);
+             }
++
++            if(mMonoUpsample)
++            {
++                DuplicateSamples(al::span{buffer, size_t{len}*frame_size}, mDevice->FmtType,
++                    mFormat.Format.nChannels);
++            }
++
+             hr = audio.mRender->ReleaseBuffer(len, 0);
+         }
+         if(FAILED(hr))
+@@ -1595,6 +1652,12 @@ void WasapiPlayback::finalizeFormat(WAVEFORMATEXTENSIBLE &OutputType)
+         {
+         case DevFmtMono:
+             chansok = (chancount >= 1 && ((chanmask&MonoMask) == MONO || !chanmask));
++            if(!chansok && chancount >= 2 && (chanmask&StereoMask) == STEREO)
++            {
++                /* Mono rendering with stereo+ output is handled specially. */
++                chansok = true;
++                mMonoUpsample = true;
++            }
+             break;
+         case DevFmtStereo:
+             chansok = (chancount >= 2 && ((chanmask&StereoMask) == STEREO || !chanmask));
+@@ -1898,6 +1961,7 @@ HRESULT WasapiPlayback::resetProxy()
+     }
+ 
+     mDevice->Flags.reset(Virtualization);
++    mMonoUpsample = false;
+ 
+     auto &audio = mAudio.emplace<PlainDevice>();
+     HRESULT hr{sDeviceHelper->activateAudioClient(mMMDev, __uuidof(IAudioClient),
+diff --git a/alsoftrc.sample b/alsoftrc.sample
+index 564e9f49..469329b5 100644
+--- a/alsoftrc.sample
++++ b/alsoftrc.sample
+@@ -189,7 +189,7 @@
+ #            between 24 and 48 points, with anti-aliasing)
+ #  fast_bsinc24 - same as bsinc24, except without interpolation between down-
+ #                 sampling scales
+-#resampler = gaussian
++#resampler = spline
+ 
+ ## rt-prio: (global)
+ #  Sets the real-time priority value for the mixing thread. Not all drivers may
+diff --git a/common/althreads.h b/common/althreads.h
+index d8491706..2283c08a 100644
+--- a/common/althreads.h
++++ b/common/althreads.h
+@@ -9,7 +9,7 @@
+ #define WIN32_LEAN_AND_MEAN
+ #include <windows.h>
+ 
+-#elif defined(__APPLE__)
++#elif defined(__APPLE__) || 1
+ 
+ #include <pthread.h>
+ 
+@@ -79,7 +79,7 @@ public:
+     [[nodiscard]]
+     auto get() const noexcept -> T { return from_ptr(TlsGetValue(mTss)); }
+ 
+-#elif defined(__APPLE__)
++#elif defined(__APPLE__) || 1
+ 
+     pthread_key_t mTss{};
+ 
+diff --git a/core/voice.h b/core/voice.h
+index fab573e4..43f6f93c 100644
+--- a/core/voice.h
++++ b/core/voice.h
+@@ -280,6 +280,6 @@ struct SIMDALIGN Voice {
+     static void InitMixer(std::optional<std::string> resopt);
+ };
+ 
+-inline Resampler ResamplerDefault{Resampler::Gaussian};
++inline Resampler ResamplerDefault{Resampler::Spline};
+ 
+ #endif /* CORE_VOICE_H */

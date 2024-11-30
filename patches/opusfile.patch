@@ -1,0 +1,401 @@
+diff --git a/include/opusfile.h b/include/opusfile.h
+index 8e7aa09..b210595 100644
+--- a/include/opusfile.h
++++ b/include/opusfile.h
+@@ -1,3 +1,6 @@
++// Modified version for Core Engine
++// Please use the original library from https://github.com/xiph/opusfile
++
+ /********************************************************************
+  *                                                                  *
+  * THIS FILE IS PART OF THE libopusfile SOFTWARE CODEC SOURCE CODE. *
+@@ -107,7 +110,7 @@ extern "C" {
+ # include <stdarg.h>
+ # include <stdio.h>
+ # include <ogg/ogg.h>
+-# include <opus_multistream.h>
++# include "opus_multistream.h"
+ 
+ /**@cond PRIVATE*/
+ 
+@@ -1226,7 +1229,7 @@ OP_WARN_UNUSED_RESULT OggOpusFile *op_open_url(const char *_url,
+             if the call fails.
+            The calling application is responsible for closing the stream if
+             this call returns an error.*/
+-OP_WARN_UNUSED_RESULT OggOpusFile *op_open_callbacks(void *_stream,
++OPUS_EXPORT OP_WARN_UNUSED_RESULT OggOpusFile *OPUS_CALL op_open_callbacks(void *_stream,
+  const OpusFileCallbacks *_cb,const unsigned char *_initial_data,
+  size_t _initial_bytes,int *_error) OP_ARG_NONNULL(2);
+ 
+@@ -1404,7 +1407,7 @@ int op_test_open(OggOpusFile *_of) OP_ARG_NONNULL(1);
+ 
+ /**Release all memory used by an \c OggOpusFile.
+    \param _of The \c OggOpusFile to free.*/
+-void op_free(OggOpusFile *_of);
++OPUS_EXPORT void OPUS_CALL op_free(OggOpusFile *_of);
+ 
+ /**@}*/
+ /**@}*/
+@@ -1440,7 +1443,7 @@ void op_free(OggOpusFile *_of);
+    This function may be called on partially-opened streams.
+    \param _of The \c OggOpusFile whose seekable status is to be returned.
+    \return A non-zero value if seekable, and 0 if unseekable.*/
+-int op_seekable(const OggOpusFile *_of) OP_ARG_NONNULL(1);
++OPUS_EXPORT int OPUS_CALL op_seekable(const OggOpusFile *_of) OP_ARG_NONNULL(1);
+ 
+ /**Returns the number of links in this chained stream.
+    This function may be called on partially-opened streams, but it will always
+@@ -1482,7 +1485,7 @@ opus_uint32 op_serialno(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
+             the channel count of the last link.
+            If the stream is not seekable, this always returns the channel count
+             of the current link.*/
+-int op_channel_count(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
++OPUS_EXPORT int OPUS_CALL op_channel_count(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
+ 
+ /**Get the total (compressed) size of the stream, or of an individual link in
+     a (possibly-chained) Ogg Opus stream, including all headers and Ogg muxing
+@@ -1522,7 +1525,7 @@ opus_int64 op_raw_total(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
+    \retval #OP_EINVAL The stream is not seekable (so we can't know the length),
+                        \a _li wasn't less than the total number of links in
+                        the stream, or the stream was only partially open.*/
+-ogg_int64_t op_pcm_total(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
++OPUS_EXPORT ogg_int64_t OPUS_CALL op_pcm_total(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
+ 
+ /**Get the ID header information for the given link in a (possibly chained) Ogg
+     Opus stream.
+@@ -1538,7 +1541,7 @@ ogg_int64_t op_pcm_total(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
+                information for the current link is always returned, if
+                available.
+    \return The contents of the ID header for the given link.*/
+-const OpusHead *op_head(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
++OPUS_EXPORT const OpusHead *OPUS_CALL op_head(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
+ 
+ /**Get the comment header information for the given link in a (possibly
+     chained) Ogg Opus stream.
+@@ -1556,7 +1559,7 @@ const OpusHead *op_head(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
+    \return The contents of the comment header for the given link, or
+             <code>NULL</code> if this is an unseekable stream that encountered
+             an invalid link.*/
+-const OpusTags *op_tags(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
++OPUS_EXPORT const OpusTags *OPUS_CALL op_tags(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
+ 
+ /**Retrieve the index of the current link.
+    This is the link that produced the data most recently read by
+@@ -1595,7 +1598,7 @@ int op_current_link(const OggOpusFile *_of) OP_ARG_NONNULL(1);
+    \retval #OP_EINVAL The stream was only partially open, the stream was not
+                        seekable, or \a _li was larger than the number of
+                        links.*/
+-opus_int32 op_bitrate(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
++OPUS_EXPORT opus_int32 OPUS_CALL op_bitrate(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
+ 
+ /**Compute the instantaneous bitrate, measured as the ratio of bits to playable
+     samples decoded since a) the last call to op_bitrate_instant(), b) the last
+@@ -1623,7 +1626,7 @@ opus_int64 op_raw_tell(const OggOpusFile *_of) OP_ARG_NONNULL(1);
+    \param _of The \c OggOpusFile from which to retrieve the PCM offset.
+    \return The PCM offset of the next sample to be read.
+    \retval #OP_EINVAL The stream was only partially open.*/
+-ogg_int64_t op_pcm_tell(const OggOpusFile *_of) OP_ARG_NONNULL(1);
++OPUS_EXPORT ogg_int64_t OPUS_CALL op_pcm_tell(const OggOpusFile *_of) OP_ARG_NONNULL(1);
+ 
+ /**@}*/
+ /**@}*/
+@@ -1671,7 +1674,7 @@ ogg_int64_t op_pcm_tell(const OggOpusFile *_of) OP_ARG_NONNULL(1);
+    \retval #OP_ENOSEEK  This stream is not seekable.
+    \retval #OP_EBADLINK Failed to initialize a decoder for a stream for an
+                          unknown reason.*/
+-int op_raw_seek(OggOpusFile *_of,opus_int64 _byte_offset) OP_ARG_NONNULL(1);
++OPUS_EXPORT int OPUS_CALL op_raw_seek(OggOpusFile *_of,opus_int64 _byte_offset) OP_ARG_NONNULL(1);
+ 
+ /**Seek to the specified PCM offset, such that decoding will begin at exactly
+     the requested position.
+@@ -1687,7 +1690,7 @@ int op_raw_seek(OggOpusFile *_of,opus_int64 _byte_offset) OP_ARG_NONNULL(1);
+    \retval #OP_EBADLINK We failed to find data we had seen before, or the
+                          bitstream structure was sufficiently malformed that
+                          seeking to the target destination was impossible.*/
+-int op_pcm_seek(OggOpusFile *_of,ogg_int64_t _pcm_offset) OP_ARG_NONNULL(1);
++OPUS_EXPORT int OPUS_CALL op_pcm_seek(OggOpusFile *_of,ogg_int64_t _pcm_offset) OP_ARG_NONNULL(1);
+ 
+ /**@}*/
+ /**@}*/
+@@ -1849,7 +1852,7 @@ int op_set_gain_offset(OggOpusFile *_of,
+     has no effect.
+    \param _of      The \c OggOpusFile on which to enable or disable dithering.
+    \param _enabled A non-zero value to enable dithering, or 0 to disable it.*/
+-void op_set_dither_enabled(OggOpusFile *_of,int _enabled) OP_ARG_NONNULL(1);
++OPUS_EXPORT void OPUS_CALL op_set_dither_enabled(OggOpusFile *_of,int _enabled) OP_ARG_NONNULL(1);
+ 
+ /**Reads more samples from the stream.
+    \note Although \a _buf_size must indicate the total number of values that
+@@ -1931,7 +1934,7 @@ void op_set_dither_enabled(OggOpusFile *_of,int _enabled) OP_ARG_NONNULL(1);
+    \retval #OP_EBADTIMESTAMP An unseekable stream encountered a new link with
+                               a starting timestamp that failed basic validity
+                               checks.*/
+-OP_WARN_UNUSED_RESULT int op_read(OggOpusFile *_of,
++OPUS_EXPORT OP_WARN_UNUSED_RESULT int OPUS_CALL op_read(OggOpusFile *_of,
+  opus_int16 *_pcm,int _buf_size,int *_li) OP_ARG_NONNULL(1);
+ 
+ /**Reads more samples from the stream.
+@@ -2012,7 +2015,7 @@ OP_WARN_UNUSED_RESULT int op_read(OggOpusFile *_of,
+    \retval #OP_EBADTIMESTAMP An unseekable stream encountered a new link with
+                               a starting timestamp that failed basic validity
+                               checks.*/
+-OP_WARN_UNUSED_RESULT int op_read_float(OggOpusFile *_of,
++OPUS_EXPORT OP_WARN_UNUSED_RESULT int OPUS_CALL op_read_float(OggOpusFile *_of,
+  float *_pcm,int _buf_size,int *_li) OP_ARG_NONNULL(1);
+ 
+ /**Reads more samples from the stream and downmixes to stereo, if necessary.
+diff --git a/win32/VS2015/opusfile.vcxproj b/win32/VS2015/opusfile.vcxproj
+index 413ab5f..15d9b43 100644
+--- a/win32/VS2015/opusfile.vcxproj
++++ b/win32/VS2015/opusfile.vcxproj
+@@ -42,47 +42,48 @@
+     <ProjectGuid>{1A4B5203-52EB-4805-9511-84B1BD094FCA}</ProjectGuid>
+     <Keyword>Win32Proj</Keyword>
+     <RootNamespace>opusfile</RootNamespace>
++    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+   </PropertyGroup>
+   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+     <ConfigurationType>StaticLibrary</ConfigurationType>
+     <UseDebugLibraries>true</UseDebugLibraries>
+     <CharacterSet>NotSet</CharacterSet>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+     <ConfigurationType>StaticLibrary</ConfigurationType>
+     <UseDebugLibraries>true</UseDebugLibraries>
+     <CharacterSet>NotSet</CharacterSet>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+     <ConfigurationType>StaticLibrary</ConfigurationType>
+     <UseDebugLibraries>false</UseDebugLibraries>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+     <CharacterSet>NotSet</CharacterSet>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-NoHTTP|Win32'" Label="Configuration">
+-    <ConfigurationType>StaticLibrary</ConfigurationType>
++    <ConfigurationType>DynamicLibrary</ConfigurationType>
+     <UseDebugLibraries>false</UseDebugLibraries>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+     <CharacterSet>NotSet</CharacterSet>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+     <ConfigurationType>StaticLibrary</ConfigurationType>
+     <UseDebugLibraries>false</UseDebugLibraries>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+     <CharacterSet>NotSet</CharacterSet>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-NoHTTP|x64'" Label="Configuration">
+-    <ConfigurationType>StaticLibrary</ConfigurationType>
++    <ConfigurationType>DynamicLibrary</ConfigurationType>
+     <UseDebugLibraries>false</UseDebugLibraries>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+     <CharacterSet>NotSet</CharacterSet>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+   </PropertyGroup>
+   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+   <ImportGroup Label="ExtensionSettings">
+@@ -125,6 +126,7 @@
+     <OutDir>$(Platform)\$(Configuration)\</OutDir>
+     <IntDir>$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+     <IncludePath>..\..\..\opus\include;..\..\..\ogg\include;..\..\include;$(IncludePath)</IncludePath>
++    <LibraryPath>$(ProjectDir)..\..\..\ogg\win32\VS2015\Win32\Release;$(ProjectDir)..\..\..\opus\vs32\MinSizeRel;$(LibraryPath)</LibraryPath>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+     <OutDir>$(Platform)\$(Configuration)\</OutDir>
+@@ -135,6 +137,7 @@
+     <OutDir>$(Platform)\$(Configuration)\</OutDir>
+     <IntDir>$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+     <IncludePath>..\..\..\opus\include;..\..\..\ogg\include;..\..\include;$(IncludePath)</IncludePath>
++    <LibraryPath>$(ProjectDir)..\..\..\ogg\win32\VS2015\x64\Release;$(ProjectDir)..\..\..\opus\vs64\MinSizeRel;$(LibraryPath)</LibraryPath>
+   </PropertyGroup>
+   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+     <ClCompile>
+@@ -191,21 +194,24 @@
+       <WarningLevel>Level3</WarningLevel>
+       <PrecompiledHeader>
+       </PrecompiledHeader>
+-      <Optimization>MaxSpeed</Optimization>
++      <Optimization>MinSpace</Optimization>
+       <FunctionLevelLinking>true</FunctionLevelLinking>
+       <IntrinsicFunctions>true</IntrinsicFunctions>
+-      <PreprocessorDefinitions>WIN32;NDEBUG;_CRT_SECURE_NO_WARNINGS;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
++      <PreprocessorDefinitions>WIN32;NDEBUG;OPUS_BUILD;DLL_EXPORT;_CRT_SECURE_NO_WARNINGS;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
++      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+       <OmitFramePointers>true</OmitFramePointers>
+-      <FloatingPointModel>Fast</FloatingPointModel>
++      <AdditionalOptions>/Gw %(AdditionalOptions)</AdditionalOptions>
++      <ExceptionHandling>false</ExceptionHandling>
++      <BufferSecurityCheck>false</BufferSecurityCheck>
+     </ClCompile>
+     <Link>
+       <SubSystem>Windows</SubSystem>
+       <GenerateDebugInformation>true</GenerateDebugInformation>
+       <EnableCOMDATFolding>true</EnableCOMDATFolding>
+       <OptimizeReferences>true</OptimizeReferences>
++      <AdditionalOptions>libogg.lib opus.lib %(AdditionalOptions)</AdditionalOptions>
+     </Link>
+   </ItemDefinitionGroup>
+   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+@@ -235,21 +241,24 @@
+       <WarningLevel>Level3</WarningLevel>
+       <PrecompiledHeader>
+       </PrecompiledHeader>
+-      <Optimization>MaxSpeed</Optimization>
++      <Optimization>MinSpace</Optimization>
+       <FunctionLevelLinking>true</FunctionLevelLinking>
+       <IntrinsicFunctions>true</IntrinsicFunctions>
+-      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_CRT_SECURE_NO_WARNINGS;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
++      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;OPUS_BUILD;DLL_EXPORT;_CRT_SECURE_NO_WARNINGS;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
++      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+       <OmitFramePointers>true</OmitFramePointers>
+-      <FloatingPointModel>Fast</FloatingPointModel>
++      <AdditionalOptions>/Gw %(AdditionalOptions)</AdditionalOptions>
++      <ExceptionHandling>false</ExceptionHandling>
++      <BufferSecurityCheck>false</BufferSecurityCheck>
+     </ClCompile>
+     <Link>
+       <SubSystem>Windows</SubSystem>
+       <GenerateDebugInformation>true</GenerateDebugInformation>
+       <EnableCOMDATFolding>true</EnableCOMDATFolding>
+       <OptimizeReferences>true</OptimizeReferences>
++      <AdditionalOptions>libogg.lib opus.lib %(AdditionalOptions)</AdditionalOptions>
+     </Link>
+   </ItemDefinitionGroup>
+   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+diff --git a/win32/VS2015/opusfile_example.vcxproj b/win32/VS2015/opusfile_example.vcxproj
+index e7e0b86..d491427 100644
+--- a/win32/VS2015/opusfile_example.vcxproj
++++ b/win32/VS2015/opusfile_example.vcxproj
+@@ -36,41 +36,41 @@
+     <ConfigurationType>Application</ConfigurationType>
+     <UseDebugLibraries>true</UseDebugLibraries>
+     <CharacterSet>Unicode</CharacterSet>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+     <ConfigurationType>Application</ConfigurationType>
+     <UseDebugLibraries>true</UseDebugLibraries>
+     <CharacterSet>Unicode</CharacterSet>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+     <ConfigurationType>Application</ConfigurationType>
+     <UseDebugLibraries>false</UseDebugLibraries>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+     <CharacterSet>Unicode</CharacterSet>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-NoHTTP|Win32'" Label="Configuration">
+     <ConfigurationType>Application</ConfigurationType>
+     <UseDebugLibraries>false</UseDebugLibraries>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+     <CharacterSet>Unicode</CharacterSet>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+     <ConfigurationType>Application</ConfigurationType>
+     <UseDebugLibraries>false</UseDebugLibraries>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+     <CharacterSet>Unicode</CharacterSet>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-NoHTTP|x64'" Label="Configuration">
+     <ConfigurationType>Application</ConfigurationType>
+     <UseDebugLibraries>false</UseDebugLibraries>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+     <CharacterSet>Unicode</CharacterSet>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+   </PropertyGroup>
+   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+   <ImportGroup Label="ExtensionSettings">
+@@ -260,4 +260,4 @@
+   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+   <ImportGroup Label="ExtensionTargets">
+   </ImportGroup>
+-</Project>
++</Project>
+\ No newline at end of file
+diff --git a/win32/VS2015/seeking_example.vcxproj b/win32/VS2015/seeking_example.vcxproj
+index afade05..f1df4e7 100644
+--- a/win32/VS2015/seeking_example.vcxproj
++++ b/win32/VS2015/seeking_example.vcxproj
+@@ -36,41 +36,41 @@
+     <ConfigurationType>Application</ConfigurationType>
+     <UseDebugLibraries>true</UseDebugLibraries>
+     <CharacterSet>NotSet</CharacterSet>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+     <ConfigurationType>Application</ConfigurationType>
+     <UseDebugLibraries>true</UseDebugLibraries>
+     <CharacterSet>NotSet</CharacterSet>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+     <ConfigurationType>Application</ConfigurationType>
+     <UseDebugLibraries>false</UseDebugLibraries>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+     <CharacterSet>NotSet</CharacterSet>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-NoHTTP|Win32'" Label="Configuration">
+     <ConfigurationType>Application</ConfigurationType>
+     <UseDebugLibraries>false</UseDebugLibraries>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+     <CharacterSet>NotSet</CharacterSet>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+     <ConfigurationType>Application</ConfigurationType>
+     <UseDebugLibraries>false</UseDebugLibraries>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+     <CharacterSet>NotSet</CharacterSet>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-NoHTTP|x64'" Label="Configuration">
+     <ConfigurationType>Application</ConfigurationType>
+     <UseDebugLibraries>false</UseDebugLibraries>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+     <CharacterSet>NotSet</CharacterSet>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+   </PropertyGroup>
+   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+   <ImportGroup Label="ExtensionSettings">
+@@ -252,4 +252,4 @@
+   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+   <ImportGroup Label="ExtensionTargets">
+   </ImportGroup>
+-</Project>
++</Project>
+\ No newline at end of file

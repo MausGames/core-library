@@ -1,5 +1,5 @@
 diff --git a/build/VS2010/datagen/datagen.vcxproj b/build/VS2010/datagen/datagen.vcxproj
-index a66358a0..f458d937 100644
+index aaba4788..cbac0733 100644
 --- a/build/VS2010/datagen/datagen.vcxproj
 +++ b/build/VS2010/datagen/datagen.vcxproj
 @@ -30,23 +30,27 @@
@@ -30,7 +30,7 @@ index a66358a0..f458d937 100644
    </PropertyGroup>
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
    <ImportGroup Label="ExtensionSettings">
-@@ -165,4 +169,4 @@
+@@ -167,4 +171,4 @@
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
    <ImportGroup Label="ExtensionTargets">
    </ImportGroup>
@@ -268,10 +268,10 @@ index 614e6292..81fe27e1 100644
 +</Project>
 \ No newline at end of file
 diff --git a/build/VS2010/zstd/zstd.vcxproj b/build/VS2010/zstd/zstd.vcxproj
-index 5e1bced6..7a18b2dc 100644
+index 5a5237f0..a3c93545 100644
 --- a/build/VS2010/zstd/zstd.vcxproj
 +++ b/build/VS2010/zstd/zstd.vcxproj
-@@ -121,23 +121,27 @@
+@@ -122,23 +122,27 @@
      <ConfigurationType>Application</ConfigurationType>
      <UseDebugLibraries>true</UseDebugLibraries>
      <CharacterSet>MultiByte</CharacterSet>
@@ -299,7 +299,7 @@ index 5e1bced6..7a18b2dc 100644
    </PropertyGroup>
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
    <ImportGroup Label="ExtensionSettings">
-@@ -261,4 +265,4 @@
+@@ -262,4 +266,4 @@
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
    <ImportGroup Label="ExtensionTargets">
    </ImportGroup>
