@@ -1,0 +1,24 @@
+diff --git a/src/hb-font.hh b/src/hb-font.hh
+index f503575c3..e83114f8e 100644
+--- a/src/hb-font.hh
++++ b/src/hb-font.hh
+@@ -688,14 +688,14 @@ struct hb_font_t
+ 
+   void mults_changed ()
+   {
+-    float upem = face->get_upem ();
++    float upem = 1.0f / face->get_upem ();
+ 
+-    x_multf = x_scale / upem;
+-    y_multf = y_scale / upem;
++    x_multf = x_scale * upem;
++    y_multf = y_scale * upem;
+     bool x_neg = x_scale < 0;
+-    x_mult = (x_neg ? -((int64_t) -x_scale << 16) : ((int64_t) x_scale << 16)) / upem;
++    x_mult = (x_neg ? -((int64_t) -x_scale << 16) : ((int64_t) x_scale << 16)) * upem;
+     bool y_neg = y_scale < 0;
+-    y_mult = (y_neg ? -((int64_t) -y_scale << 16) : ((int64_t) y_scale << 16)) / upem;
++    y_mult = (y_neg ? -((int64_t) -y_scale << 16) : ((int64_t) y_scale << 16)) * upem;
+ 
+     x_strength = fabsf (roundf (x_scale * x_embolden));
+     y_strength = fabsf (roundf (y_scale * y_embolden));

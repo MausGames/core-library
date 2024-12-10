@@ -1,0 +1,53 @@
+diff --git a/cmake/cpu.cmake b/cmake/cpu.cmake
+index da9a42a4..a79c491b 100644
+--- a/cmake/cpu.cmake
++++ b/cmake/cpu.cmake
+@@ -57,7 +57,6 @@ endif()
+ 
+ list(LENGTH WEBP_SIMD_FLAGS WEBP_SIMD_FLAGS_LENGTH)
+ math(EXPR WEBP_SIMD_FLAGS_RANGE "${WEBP_SIMD_FLAGS_LENGTH} - 1")
+-unset(HIGHEST_SSE_FLAG)
+ 
+ foreach(I_SIMD RANGE ${WEBP_SIMD_FLAGS_RANGE})
+   list(GET WEBP_SIMD_FLAGS ${I_SIMD} WEBP_SIMD_FLAG)
+@@ -84,17 +83,10 @@ foreach(I_SIMD RANGE ${WEBP_SIMD_FLAGS_RANGE})
+   file(GLOB SIMD_FILES "${CMAKE_CURRENT_LIST_DIR}/../"
+             "src/dsp/*${WEBP_SIMD_FILE_EXTENSION}")
+   if(WEBP_HAVE_${WEBP_SIMD_FLAG})
+-    if(${I_SIMD} LESS 2 AND NOT HIGHEST_SSE_FLAG)
+-      set(HIGHEST_SSE_FLAG ${SIMD_COMPILE_FLAG})
+-    endif()
+     # Memorize the file and flags.
+     foreach(FILE ${SIMD_FILES})
+       list(APPEND WEBP_SIMD_FILES_TO_INCLUDE ${FILE})
+-      if(${I_SIMD} LESS 2)
+-        list(APPEND WEBP_SIMD_FLAGS_TO_INCLUDE ${HIGHEST_SSE_FLAG})
+-      else()
+-        list(APPEND WEBP_SIMD_FLAGS_TO_INCLUDE ${SIMD_COMPILE_FLAG})
+-      endif()
++      list(APPEND WEBP_SIMD_FLAGS_TO_INCLUDE ${SIMD_COMPILE_FLAG})
+     endforeach()
+   else()
+     # Remove the file from the list.
+diff --git a/src/dsp/dsp.h b/src/dsp/dsp.h
+index fafc2d05..b9c048a5 100644
+--- a/src/dsp/dsp.h
++++ b/src/dsp/dsp.h
+@@ -81,7 +81,7 @@ extern "C" {
+ #if (defined(__ARM_NEON__) || \
+      defined(__aarch64__) || defined(WEBP_HAVE_NEON)) && \
+     !defined(__native_client__)
+-#define WEBP_USE_NEON
++//#define WEBP_USE_NEON
+ #endif
+ 
+ #if !defined(WEBP_USE_NEON) && defined(__ANDROID__) && \
+@@ -117,7 +117,7 @@ extern "C" {
+ #endif
+ 
+ #if (defined(__aarch64__) || defined(__ARM_NEON__)) && WEBP_DSP_OMIT_C_CODE
+-#define WEBP_NEON_OMIT_C_CODE 1
++#define WEBP_NEON_OMIT_C_CODE 0
+ #else
+ #define WEBP_NEON_OMIT_C_CODE 0
+ #endif
