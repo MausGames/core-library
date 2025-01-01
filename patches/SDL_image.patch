@@ -1,11 +1,11 @@
 diff --git a/.gitignore b/.gitignore
-index 17895a2..9b36304 100644
+index 1849da73..79f7db12 100644
 --- a/.gitignore
 +++ b/.gitignore
-@@ -26,3 +26,16 @@ Release
- *.suo
- *.sdf
- *.opensdf
+@@ -30,3 +30,17 @@ deps
+ dist
+ build-mingw
+ Xcode/build.xcconfig
 +.suo
 +*.log
 +*.tlog
@@ -19,33 +19,28 @@ index 17895a2..9b36304 100644
 +*.exp
 +*.pdb
 +*.pch
++build/
 diff --git a/VisualC/SDL_image.vcxproj b/VisualC/SDL_image.vcxproj
-index 5ed188b..e6a5f1e 100644
+index 2b0ef2f9..796817a8 100644
 --- a/VisualC/SDL_image.vcxproj
 +++ b/VisualC/SDL_image.vcxproj
-@@ -26,15 +26,21 @@
-   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+@@ -28,6 +28,7 @@
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
      <ConfigurationType>DynamicLibrary</ConfigurationType>
-+    <PlatformToolset>v143</PlatformToolset>
+     <PlatformToolset Condition="'$(VisualStudioVersion)' != '10.0'">$(DefaultPlatformToolset)</PlatformToolset>
 +    <WholeProgramOptimization>true</WholeProgramOptimization>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
      <ConfigurationType>DynamicLibrary</ConfigurationType>
-+    <PlatformToolset>v143</PlatformToolset>
-   </PropertyGroup>
+@@ -36,6 +37,7 @@
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
      <ConfigurationType>DynamicLibrary</ConfigurationType>
-+    <PlatformToolset>v143</PlatformToolset>
+     <PlatformToolset Condition="'$(VisualStudioVersion)' != '10.0'">$(DefaultPlatformToolset)</PlatformToolset>
 +    <WholeProgramOptimization>true</WholeProgramOptimization>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
      <ConfigurationType>DynamicLibrary</ConfigurationType>
-+    <PlatformToolset>v143</PlatformToolset>
-   </PropertyGroup>
-   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-   <ImportGroup Label="ExtensionSettings">
-@@ -80,19 +86,19 @@
+@@ -69,19 +71,19 @@
      <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -69,28 +64,10 @@ index 5ed188b..e6a5f1e 100644
      <LibraryPath>$(SolutionDir)..\..\SDL\VisualC\$(PlatformName)\$(Configuration);$(LibraryPath)</LibraryPath>
    </PropertyGroup>
    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-@@ -108,7 +114,7 @@
-     <ClCompile>
-       <Optimization>Disabled</Optimization>
-       <AdditionalIncludeDirectories>$(ProjectDir)\..\include;external\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
--      <PreprocessorDefinitions>DLL_EXPORT;_DEBUG;WIN32;_WINDOWS;USE_STBIMAGE;LOAD_AVIF;LOAD_AVIF_DYNAMIC="libavif-16.dll";LOAD_BMP;LOAD_GIF;LOAD_JPG;LOAD_LBM;LOAD_PCX;LOAD_PNG;LOAD_PNM;LOAD_QOI;LOAD_SVG;LOAD_TGA;LOAD_TIF;LOAD_TIF_DYNAMIC="libtiff-5.dll";LOAD_WEBP;LOAD_WEBP_DYNAMIC="libwebp-7.dll";LOAD_WEBPDEMUX_DYNAMIC="libwebpdemux-2.dll";LOAD_XCF;LOAD_XPM;LOAD_XV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-+      <PreprocessorDefinitions>DLL_EXPORT;_DEBUG;WIN32;_WINDOWS;USE_STBIMAGE;LOAD_BMP;LOAD_GIF;LOAD_JPG;LOAD_LBM;LOAD_PCX;LOAD_PNG;LOAD_PNM;LOAD_QOI;LOAD_SVG;LOAD_TGA;LOAD_TIF;LOAD_TIF_DYNAMIC="libtiff-5.dll";LOAD_WEBP;LOAD_WEBP_DYNAMIC="libwebp-7.dll";LOAD_XCF;LOAD_XPM;LOAD_XV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-       <WarningLevel>Level3</WarningLevel>
-       <DebugInformationFormat>OldStyle</DebugInformationFormat>
-@@ -136,7 +142,7 @@
+@@ -152,10 +154,15 @@
      </Midl>
      <ClCompile>
-       <AdditionalIncludeDirectories>$(ProjectDir)\..\include;external\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
--      <PreprocessorDefinitions>DLL_EXPORT;_DEBUG;WIN32;_WINDOWS;USE_STBIMAGE;LOAD_AVIF;LOAD_AVIF_DYNAMIC="libavif-16.dll";LOAD_BMP;LOAD_GIF;LOAD_JPG;LOAD_LBM;LOAD_PCX;LOAD_PNG;LOAD_PNM;LOAD_QOI;LOAD_SVG;LOAD_TGA;LOAD_TIF;LOAD_TIF_DYNAMIC="libtiff-5.dll";LOAD_WEBP;LOAD_WEBP_DYNAMIC="libwebp-7.dll";LOAD_WEBPDEMUX_DYNAMIC="libwebpdemux-2.dll";LOAD_XCF;LOAD_XPM;LOAD_XV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-+      <PreprocessorDefinitions>DLL_EXPORT;_DEBUG;WIN32;_WINDOWS;USE_STBIMAGE;LOAD_BMP;LOAD_GIF;LOAD_JPG;LOAD_LBM;LOAD_PCX;LOAD_PNG;LOAD_PNM;LOAD_QOI;LOAD_SVG;LOAD_TGA;LOAD_TIF;LOAD_TIF_DYNAMIC="libtiff-5.dll";LOAD_WEBP;LOAD_WEBP_DYNAMIC="libwebp-7.dll";LOAD_XCF;LOAD_XPM;LOAD_XV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-       <WarningLevel>Level3</WarningLevel>
-       <Optimization>Disabled</Optimization>
-@@ -165,10 +171,14 @@
-     </Midl>
-     <ClCompile>
-       <AdditionalIncludeDirectories>$(ProjectDir)\..\include;external\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+       <AdditionalIncludeDirectories>$(ProjectDir)..\include;external\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 -      <PreprocessorDefinitions>DLL_EXPORT;NDEBUG;WIN32;_WINDOWS;USE_STBIMAGE;LOAD_AVIF;LOAD_AVIF_DYNAMIC="libavif-16.dll";LOAD_BMP;LOAD_GIF;LOAD_JPG;LOAD_LBM;LOAD_PCX;LOAD_PNG;LOAD_PNM;LOAD_QOI;LOAD_SVG;LOAD_TGA;LOAD_TIF;LOAD_TIF_DYNAMIC="libtiff-5.dll";LOAD_WEBP;LOAD_WEBP_DYNAMIC="libwebp-7.dll";LOAD_WEBPDEMUX_DYNAMIC="libwebpdemux-2.dll";LOAD_XCF;LOAD_XPM;LOAD_XV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
 +      <PreprocessorDefinitions>DLL_EXPORT;NDEBUG;WIN32;_WINDOWS;USE_STBIMAGE;LOAD_PNG;LOAD_WEBP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
        <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -101,23 +78,26 @@ index 5ed188b..e6a5f1e 100644
 +      <BufferSecurityCheck>false</BufferSecurityCheck>
 +      <FunctionLevelLinking>true</FunctionLevelLinking>
 +      <AdditionalOptions>/Gw %(AdditionalOptions)</AdditionalOptions>
++      <IntrinsicFunctions>true</IntrinsicFunctions>
      </ClCompile>
      <ResourceCompile>
        <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-@@ -176,6 +186,8 @@
+@@ -163,6 +170,8 @@
      <Link>
        <AdditionalDependencies>SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
        <SubSystem>Windows</SubSystem>
 +      <OptimizeReferences>true</OptimizeReferences>
 +      <EnableCOMDATFolding>true</EnableCOMDATFolding>
      </Link>
-     <Bscmake />
    </ItemDefinitionGroup>
-@@ -191,10 +203,13 @@
+   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+@@ -176,11 +185,15 @@
+       </HeaderFileName>
      </Midl>
      <ClCompile>
-       <AdditionalIncludeDirectories>$(ProjectDir)\..\include;external\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+-      <AdditionalIncludeDirectories>$(ProjectDir)..\include;external\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 -      <PreprocessorDefinitions>DLL_EXPORT;NDEBUG;WIN32;_WINDOWS;USE_STBIMAGE;LOAD_AVIF;LOAD_AVIF_DYNAMIC="libavif-16.dll";LOAD_BMP;LOAD_GIF;LOAD_JPG;LOAD_LBM;LOAD_PCX;LOAD_PNG;LOAD_PNM;LOAD_QOI;LOAD_SVG;LOAD_TGA;LOAD_TIF;LOAD_TIF_DYNAMIC="libtiff-5.dll";LOAD_WEBP;LOAD_WEBP_DYNAMIC="libwebp-7.dll";LOAD_WEBPDEMUX_DYNAMIC="libwebpdemux-2.dll";LOAD_XCF;LOAD_XPM;LOAD_XV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <AdditionalIncludeDirectories>$(ProjectDir)\..\include;external\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 +      <PreprocessorDefinitions>DLL_EXPORT;NDEBUG;WIN32;_WINDOWS;USE_STBIMAGE;LOAD_PNG;LOAD_WEBP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
        <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
        <WarningLevel>Level3</WarningLevel>
@@ -126,17 +106,17 @@ index 5ed188b..e6a5f1e 100644
 +      <BufferSecurityCheck>false</BufferSecurityCheck>
 +      <FunctionLevelLinking>true</FunctionLevelLinking>
 +      <AdditionalOptions>/Gw %(AdditionalOptions)</AdditionalOptions>
++      <IntrinsicFunctions>true</IntrinsicFunctions>
      </ClCompile>
      <ResourceCompile>
        <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-@@ -202,10 +217,126 @@
+@@ -188,9 +201,125 @@
      <Link>
        <SubSystem>Windows</SubSystem>
        <AdditionalDependencies>SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
 +      <OptimizeReferences>true</OptimizeReferences>
 +      <EnableCOMDATFolding>true</EnableCOMDATFolding>
      </Link>
-     <Bscmake />
    </ItemDefinitionGroup>
    <ItemGroup>
 +    <ClCompile Include="..\external\libwebp\src\dec\alpha_dec.c" />
@@ -256,7 +236,7 @@ index 5ed188b..e6a5f1e 100644
      <ClCompile Include="..\src\IMG.c" />
      <ClCompile Include="..\src\IMG_avif.c" />
      <ClCompile Include="..\src\IMG_bmp.c" />
-@@ -231,9 +362,53 @@
+@@ -216,9 +345,53 @@
      <ResourceCompile Include="..\src\version.rc" />
    </ItemGroup>
    <ItemGroup>
@@ -313,7 +293,7 @@ index 5ed188b..e6a5f1e 100644
 +</Project>
 \ No newline at end of file
 diff --git a/VisualC/SDL_image.vcxproj.filters b/VisualC/SDL_image.vcxproj.filters
-index 5a326a1..ca26f9d 100644
+index 5a326a11..ca26f9d5 100644
 --- a/VisualC/SDL_image.vcxproj.filters
 +++ b/VisualC/SDL_image.vcxproj.filters
 @@ -61,6 +61,348 @@
@@ -819,41 +799,17 @@ index 5a326a1..ca26f9d 100644
 -</Project>
 +</Project>
 \ No newline at end of file
-diff --git a/VisualC/showimage/showimage.vcxproj b/VisualC/showimage/showimage.vcxproj
-index 3a84be5..86d72b1 100644
---- a/VisualC/showimage/showimage.vcxproj
-+++ b/VisualC/showimage/showimage.vcxproj
-@@ -26,15 +26,19 @@
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-     <ConfigurationType>Application</ConfigurationType>
-     <UseOfMfc>false</UseOfMfc>
-+    <PlatformToolset>v143</PlatformToolset>
-   </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-     <ConfigurationType>Application</ConfigurationType>
-+    <PlatformToolset>v143</PlatformToolset>
-   </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-     <ConfigurationType>Application</ConfigurationType>
-+    <PlatformToolset>v143</PlatformToolset>
-   </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-     <ConfigurationType>Application</ConfigurationType>
-+    <PlatformToolset>v143</PlatformToolset>
-   </PropertyGroup>
-   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-   <ImportGroup Label="ExtensionSettings">
 diff --git a/external/libwebp b/external/libwebp
 --- a/external/libwebp
 +++ b/external/libwebp
 @@ -1 +1 @@
--Subproject commit f46de1e669658c6752fba1973517b47f5f54a7a5
-+Subproject commit f46de1e669658c6752fba1973517b47f5f54a7a5-dirty
+-Subproject commit 05b15cb850e7bed3b4fed1d360873de352411659
++Subproject commit 05b15cb850e7bed3b4fed1d360873de352411659-dirty
 diff --git a/src/IMG_png.c b/src/IMG_png.c
-index fed971b..d87026d 100644
+index bf1f0987..f0c8fa7e 100644
 --- a/src/IMG_png.c
 +++ b/src/IMG_png.c
-@@ -557,7 +557,11 @@ SDL_Surface *IMG_LoadPNG_RW(SDL_RWops *src)
+@@ -566,7 +566,11 @@ SDL_Surface *IMG_LoadPNG_RW(SDL_RWops *src)
  
  #if SDL_IMAGE_SAVE_PNG
  
@@ -866,17 +822,21 @@ index fed971b..d87026d 100644
  
  #ifdef USE_LIBPNG
  
-@@ -581,7 +585,7 @@ static int IMG_SavePNG_RW_libpng(SDL_Surface *surface, SDL_RWops *dst, int freed
-         Uint8 transparent_table[256];
-         SDL_Surface *source = surface;
-         SDL_Palette *palette;
--        int png_color_type = PNG_COLOR_TYPE_RGB_ALPHA;
-+        int png_color_type = PNG_COLOR_TYPE_RGB;
+@@ -662,10 +666,10 @@ static int LIBPNG_SavePNG_RW(struct savepng_vars *vars, SDL_Surface *surface, SD
+     else if (surface->format->format != png_format) {
+         /* Otherwise, (surface has alpha data), and it is not in the exact right
+            format , so it should be converted to that */
+-        png_color_type = PNG_COLOR_TYPE_RGB_ALPHA;
++        png_color_type = PNG_COLOR_TYPE_RGB;
+         vars->source = SDL_ConvertSurfaceFormat(surface, png_format, 0);
+     } else {
+-        png_color_type = PNG_COLOR_TYPE_RGB_ALPHA;
++        png_color_type = PNG_COLOR_TYPE_RGB;
+     }
  
-         png_ptr = lib.png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-         if (png_ptr == NULL) {
+     lib.png_set_write_fn(vars->png_ptr, dst, png_write_data, png_flush_data);
 diff --git a/src/IMG_stb.c b/src/IMG_stb.c
-index d3aa3b1..53b533a 100644
+index 7c3af8f1..3c90ff6f 100644
 --- a/src/IMG_stb.c
 +++ b/src/IMG_stb.c
 @@ -38,6 +38,7 @@
