@@ -35,6 +35,8 @@
 # model
 *.blend       binary
 *.md3         binary
+*.md3z        binary
+*.md5z        binary
 
 # document
 *.docx        binary
