@@ -1,8 +1,8 @@
 diff --git a/.gitignore b/.gitignore
-index 904dd22..7aa6613 100644
+index 904dd22..2b54685 100644
 --- a/.gitignore
 +++ b/.gitignore
-@@ -18,3 +18,17 @@ xcuserdata
+@@ -18,3 +18,18 @@ xcuserdata
  SDL2_ttf.pc
  glfont
  showfont
@@ -20,51 +20,10 @@ index 904dd22..7aa6613 100644
 +*.exp
 +*.pdb
 +*.pch
++build/
 \ No newline at end of file
-diff --git a/SDL_ttf.c b/SDL_ttf.c
-index 07544e8..941bcc9 100644
---- a/SDL_ttf.c
-+++ b/SDL_ttf.c
-@@ -260,7 +260,9 @@ struct _TTF_Font {
- 
-     /* Whether kerning is desired */
-     int allow_kerning;
-+#if !TTF_USE_HARFBUZZ
-     int use_kerning;
-+#endif
- 
-     /* Extra width in glyph bounds for text styles */
-     int glyph_overhang;
-@@ -3016,7 +3018,11 @@ int TTF_GetFontKerning(const TTF_Font *font)
- void TTF_SetFontKerning(TTF_Font *font, int allowed)
- {
-     font->allow_kerning = allowed;
-+#if TTF_USE_HARFBUZZ
-+    /* Harfbuzz can do kerning positioning even if the font hasn't the data */
-+#else
-     font->use_kerning   = allowed && FT_HAS_KERNING(font->face);
-+#endif
- }
- 
- long TTF_FontFaces(const TTF_Font *font)
-@@ -3231,7 +3237,14 @@ static int TTF_Size_Internal(TTF_Font *font,
- 
-     /* Layout the text */
-     hb_buffer_add_utf8(hb_buffer, text, -1, 0, -1);
--    hb_shape(font->hb_font, hb_buffer, NULL, 0);
-+
-+    hb_feature_t userfeatures[1];
-+    userfeatures[0].tag = HB_TAG('k','e','r','n');
-+    userfeatures[0].value = font->allow_kerning;
-+    userfeatures[0].start = HB_FEATURE_GLOBAL_START;
-+    userfeatures[0].end = HB_FEATURE_GLOBAL_END;
-+
-+    hb_shape(font->hb_font, hb_buffer, userfeatures, 1);
- 
-     /* Get the result */
-     hb_glyph_info = hb_buffer_get_glyph_infos(hb_buffer, &glyph_count);
 diff --git a/VisualC/SDL_ttf.vcxproj b/VisualC/SDL_ttf.vcxproj
-index b7327bb..fefe653 100644
+index 37888a2..50b0f92 100644
 --- a/VisualC/SDL_ttf.vcxproj
 +++ b/VisualC/SDL_ttf.vcxproj
 @@ -28,6 +28,7 @@
@@ -83,9 +42,48 @@ index b7327bb..fefe653 100644
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
      <ConfigurationType>DynamicLibrary</ConfigurationType>
-@@ -169,7 +171,11 @@
+@@ -113,7 +115,7 @@
+     <ClCompile>
+       <Optimization>Disabled</Optimization>
+       <PreprocessorDefinitions>DLL_EXPORT;WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;TTF_USE_HARFBUZZ=1;FT_PUBLIC_FUNCTION_ATTRIBUTE=;FT_CONFIG_OPTION_USE_HARFBUZZ;FT2_BUILD_LIBRARY;HAVE_FREETYPE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+       <WarningLevel>Level3</WarningLevel>
+       <DebugInformationFormat>OldStyle</DebugInformationFormat>
+       <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
+@@ -122,7 +124,7 @@
+       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+     </ResourceCompile>
+     <Link>
+-      <AdditionalDependencies>SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>SDL2.lib;ucrtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>external\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <GenerateDebugInformation>true</GenerateDebugInformation>
+       <SubSystem>Windows</SubSystem>
+@@ -141,7 +143,7 @@
+     <ClCompile>
+       <Optimization>Disabled</Optimization>
+       <PreprocessorDefinitions>DLL_EXPORT;WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;TTF_USE_HARFBUZZ=1;FT_PUBLIC_FUNCTION_ATTRIBUTE=;FT_CONFIG_OPTION_USE_HARFBUZZ;FT2_BUILD_LIBRARY;HAVE_FREETYPE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+       <WarningLevel>Level3</WarningLevel>
+       <DebugInformationFormat>OldStyle</DebugInformationFormat>
+     </ClCompile>
+@@ -149,7 +151,7 @@
+       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+     </ResourceCompile>
+     <Link>
+-      <AdditionalDependencies>SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>SDL2.lib;ucrtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>external\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <GenerateDebugInformation>true</GenerateDebugInformation>
+       <SubSystem>Windows</SubSystem>
+@@ -167,19 +169,26 @@
+     </Midl>
+     <ClCompile>
        <PreprocessorDefinitions>DLL_EXPORT;WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;TTF_USE_HARFBUZZ=1;FT_PUBLIC_FUNCTION_ATTRIBUTE=;FT_CONFIG_OPTION_USE_HARFBUZZ;FT2_BUILD_LIBRARY;HAVE_FREETYPE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
        <WarningLevel>Level3</WarningLevel>
 -      <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
 +      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
@@ -93,34 +91,49 @@ index b7327bb..fefe653 100644
 +      <BufferSecurityCheck>false</BufferSecurityCheck>
 +      <FunctionLevelLinking>true</FunctionLevelLinking>
 +      <AdditionalOptions>/Gw %(AdditionalOptions)</AdditionalOptions>
++      <IntrinsicFunctions>true</IntrinsicFunctions>
++      <ExceptionHandling>false</ExceptionHandling>
++      <RuntimeTypeInfo>false</RuntimeTypeInfo>
      </ClCompile>
      <ResourceCompile>
        <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-@@ -178,6 +184,8 @@
+     </ResourceCompile>
+     <Link>
+-      <SubSystem>Windows</SubSystem>
        <AdditionalDependencies>SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
        <AdditionalLibraryDirectories>external\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-       <SubSystem>Windows</SubSystem>
-+      <OptimizeReferences>true</OptimizeReferences>
+-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
++      <SubSystem>Windows</SubSystem>
+       <OptimizeReferences>true</OptimizeReferences>
 +      <EnableCOMDATFolding>true</EnableCOMDATFolding>
      </Link>
    </ItemDefinitionGroup>
    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-@@ -194,6 +202,10 @@
+@@ -194,18 +203,25 @@
+     </Midl>
+     <ClCompile>
        <PreprocessorDefinitions>DLL_EXPORT;WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;TTF_USE_HARFBUZZ=1;FT_PUBLIC_FUNCTION_ATTRIBUTE=;FT_CONFIG_OPTION_USE_HARFBUZZ;FT2_BUILD_LIBRARY;HAVE_FREETYPE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
        <WarningLevel>Level3</WarningLevel>
 +      <Optimization>MinSpace</Optimization>
 +      <BufferSecurityCheck>false</BufferSecurityCheck>
 +      <FunctionLevelLinking>true</FunctionLevelLinking>
 +      <AdditionalOptions>/Gw %(AdditionalOptions)</AdditionalOptions>
++      <IntrinsicFunctions>true</IntrinsicFunctions>
++      <ExceptionHandling>false</ExceptionHandling>
++      <RuntimeTypeInfo>false</RuntimeTypeInfo>
      </ClCompile>
      <ResourceCompile>
        <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-@@ -202,6 +214,8 @@
+     </ResourceCompile>
+     <Link>
+-      <SubSystem>Windows</SubSystem>
        <AdditionalDependencies>SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
        <AdditionalLibraryDirectories>external\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-       <SubSystem>Windows</SubSystem>
-+      <OptimizeReferences>true</OptimizeReferences>
+-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
++      <SubSystem>Windows</SubSystem>
+       <OptimizeReferences>true</OptimizeReferences>
 +      <EnableCOMDATFolding>true</EnableCOMDATFolding>
      </Link>
    </ItemDefinitionGroup>
@@ -129,5 +142,5 @@ diff --git a/external/harfbuzz b/external/harfbuzz
 --- a/external/harfbuzz
 +++ b/external/harfbuzz
 @@ -1 +1 @@
--Subproject commit 516b7ed0b022ab0ffeb0cee87d31d9c40d3a54df
-+Subproject commit 516b7ed0b022ab0ffeb0cee87d31d9c40d3a54df-dirty
+-Subproject commit e18e66409d0136cc8f8b05aac791f84314520676
++Subproject commit e18e66409d0136cc8f8b05aac791f84314520676-dirty
