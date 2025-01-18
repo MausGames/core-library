@@ -22,10 +22,10 @@ index 688980a5..891b527e 100644
 +*.pch
 \ No newline at end of file
 diff --git a/al/error.cpp b/al/error.cpp
-index f852d5ed..75598ba7 100644
+index 4d2015ce..f2428732 100644
 --- a/al/error.cpp
 +++ b/al/error.cpp
-@@ -97,7 +97,7 @@ void ALCcontext::setError(ALenum errorCode, const char *msg, ...)
+@@ -60,7 +60,7 @@ void ALCcontext::setErrorImpl(ALenum errorCode, const fmt::string_view fmt, fmt:
          if(IsDebuggerPresent())
              DebugBreak();
  #elif defined(SIGTRAP)
@@ -34,7 +34,7 @@ index f852d5ed..75598ba7 100644
  #endif
      }
  
-@@ -140,7 +140,7 @@ AL_API auto AL_APIENTRY alGetError() noexcept -> ALenum
+@@ -114,7 +114,7 @@ AL_API auto AL_APIENTRY alGetError() noexcept -> ALenum
          if(IsDebuggerPresent())
              DebugBreak();
  #elif defined(SIGTRAP)
@@ -44,10 +44,10 @@ index f852d5ed..75598ba7 100644
      }
      return deferror;
 diff --git a/alc/alc.cpp b/alc/alc.cpp
-index 26ce9233..622793d4 100644
+index d378364b..503b0d2e 100644
 --- a/alc/alc.cpp
 +++ b/alc/alc.cpp
-@@ -1978,7 +1978,7 @@ void alcSetError(al::Device *device, ALCenum errorCode)
+@@ -2004,7 +2004,7 @@ void alcSetError(al::Device *device, ALCenum errorCode)
          if(IsDebuggerPresent())
              DebugBreak();
  #elif defined(SIGTRAP)
@@ -57,7 +57,7 @@ index 26ce9233..622793d4 100644
      }
  
 diff --git a/alsoftrc.sample b/alsoftrc.sample
-index 564e9f49..469329b5 100644
+index 166aae16..d5c46261 100644
 --- a/alsoftrc.sample
 +++ b/alsoftrc.sample
 @@ -189,7 +189,7 @@
@@ -69,37 +69,3 @@ index 564e9f49..469329b5 100644
  
  ## rt-prio: (global)
  #  Sets the real-time priority value for the mixing thread. Not all drivers may
-diff --git a/common/althreads.h b/common/althreads.h
-index d8491706..2283c08a 100644
---- a/common/althreads.h
-+++ b/common/althreads.h
-@@ -9,7 +9,7 @@
- #define WIN32_LEAN_AND_MEAN
- #include <windows.h>
- 
--#elif defined(__APPLE__)
-+#elif defined(__APPLE__) || 1
- 
- #include <pthread.h>
- 
-@@ -79,7 +79,7 @@ public:
-     [[nodiscard]]
-     auto get() const noexcept -> T { return from_ptr(TlsGetValue(mTss)); }
- 
--#elif defined(__APPLE__)
-+#elif defined(__APPLE__) || 1
- 
-     pthread_key_t mTss{};
- 
-diff --git a/core/voice.h b/core/voice.h
-index 9dbffdde..bb7c6e24 100644
---- a/core/voice.h
-+++ b/core/voice.h
-@@ -280,6 +280,6 @@ struct SIMDALIGN Voice {
-     static void InitMixer(std::optional<std::string> resopt);
- };
- 
--inline Resampler ResamplerDefault{Resampler::Gaussian};
-+inline Resampler ResamplerDefault{Resampler::Spline};
- 
- #endif /* CORE_VOICE_H */
