@@ -1,8 +1,8 @@
 diff --git a/backends/imgui_impl_opengl3.cpp b/backends/imgui_impl_opengl3.cpp
-index c03156a7e..f4b35ae8e 100644
+index efc1a3c49..09377e013 100644
 --- a/backends/imgui_impl_opengl3.cpp
 +++ b/backends/imgui_impl_opengl3.cpp
-@@ -147,9 +147,9 @@
+@@ -148,9 +148,9 @@
  #include <GLES2/gl2.h>          // Use GL ES 2
  #endif
  #if defined(__EMSCRIPTEN__)
@@ -15,7 +15,7 @@ index c03156a7e..f4b35ae8e 100644
  #include <GLES2/gl2ext.h>
  #endif
  #elif defined(IMGUI_IMPL_OPENGL_ES3)
-@@ -175,10 +175,10 @@
+@@ -177,10 +177,10 @@
  #define IMGUI_IMPL_OPENGL_USE_VERTEX_ARRAY
  #elif defined(__EMSCRIPTEN__)
  #define IMGUI_IMPL_OPENGL_USE_VERTEX_ARRAY
@@ -30,7 +30,7 @@ index c03156a7e..f4b35ae8e 100644
  #endif
  
  // Desktop GL 2.0+ has extension and glPolygonMode() which GL ES and WebGL don't have..
-@@ -205,7 +205,7 @@
+@@ -207,7 +207,7 @@
  
  // Desktop GL 3.3+ and GL ES 3.0+ have glBindSampler()
  #if !defined(IMGUI_IMPL_OPENGL_ES2) && (defined(IMGUI_IMPL_OPENGL_ES3) || defined(GL_VERSION_3_3))
@@ -40,7 +40,7 @@ index c03156a7e..f4b35ae8e 100644
  
  // [Debugging]
 diff --git a/backends/imgui_impl_sdl2.cpp b/backends/imgui_impl_sdl2.cpp
-index 14022159f..48c528e16 100644
+index 0aaf9830a..03394a7d1 100644
 --- a/backends/imgui_impl_sdl2.cpp
 +++ b/backends/imgui_impl_sdl2.cpp
 @@ -99,8 +99,8 @@
@@ -64,7 +64,7 @@ index 14022159f..48c528e16 100644
  #include <SDL_vulkan.h>
  #endif
 diff --git a/imconfig.h b/imconfig.h
-index fea89dea0..2389c7379 100644
+index 8f8bc3b9a..3f88ccafa 100644
 --- a/imconfig.h
 +++ b/imconfig.h
 @@ -28,7 +28,7 @@
