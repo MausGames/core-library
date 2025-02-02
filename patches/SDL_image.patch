@@ -1,12 +1,8 @@
 diff --git a/.gitmodules b/.gitmodules
-index 297a7d9d..1cc03928 100644
+index 63aedd6f..51eac75e 100644
 --- a/.gitmodules
 +++ b/.gitmodules
-@@ -1,11 +1,3 @@
--[submodule "external/SDL"]
--	path = external/SDL
--	url = https://github.com/libsdl-org/SDL.git
--	branch = main
+@@ -1,7 +1,3 @@
 -[submodule "external/jpeg"]
 -	path = external/jpeg
 -	url = https://github.com/libsdl-org/jpeg.git
@@ -14,7 +10,7 @@ index 297a7d9d..1cc03928 100644
  [submodule "external/libpng"]
  	path = external/libpng
  	url = https://github.com/libsdl-org/libpng.git
-@@ -13,28 +5,4 @@
+@@ -9,28 +5,4 @@
  [submodule "external/libwebp"]
  	path = external/libwebp
  	url = https://github.com/libsdl-org/libwebp.git
@@ -30,7 +26,7 @@ index 297a7d9d..1cc03928 100644
 -[submodule "external/libjxl"]
 -	path = external/libjxl
 -	url = https://github.com/libsdl-org/libjxl.git
--	branch = v0.6.1-SDL
+-	branch = v0.7.2-SDL
 -[submodule "external/libavif"]
 -	path = external/libavif
 -	url = https://github.com/libsdl-org/libavif.git
@@ -45,21 +41,8 @@ index 297a7d9d..1cc03928 100644
 -	branch = v3.6.1-SDL
 +	branch = 1.3.2-SDL
 \ No newline at end of file
-diff --git a/VisualC/SDL_image.sln b/VisualC/SDL_image.sln
-index ba40ec77..dfb5206c 100644
---- a/VisualC/SDL_image.sln
-+++ b/VisualC/SDL_image.sln
-@@ -7,7 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL3_image", "SDL_image.vcx
- EndProject
- Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "showimage", "showimage\showimage.vcxproj", "{FEE80C5D-762E-4E57-9BCB-928749E8203F}"
- EndProject
--Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL3", "..\external\SDL\VisualC\SDL\SDL.vcxproj", "{81CE8DAF-EBB2-4761-8E45-B71ABCCA8C68}"
-+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL3", "..\..\SDL\VisualC\SDL\SDL.vcxproj", "{81CE8DAF-EBB2-4761-8E45-B71ABCCA8C68}"
- EndProject
- Global
- 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 diff --git a/VisualC/SDL_image.vcxproj b/VisualC/SDL_image.vcxproj
-index 041bc2ab..56e80b00 100644
+index 46e50b7f..37e82aa8 100644
 --- a/VisualC/SDL_image.vcxproj
 +++ b/VisualC/SDL_image.vcxproj
 @@ -31,6 +31,7 @@
@@ -96,13 +79,36 @@ index 041bc2ab..56e80b00 100644
      <LibraryPath>$(SolutionDir)$(PlatformName)\$(Configuration);$(ProjectDir)..\..\SDL\VisualC\$(PlatformName)\$(Configuration);$(LibraryPath)</LibraryPath>
    </PropertyGroup>
    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-@@ -155,10 +157,16 @@
+@@ -101,7 +103,7 @@
+       <Optimization>Disabled</Optimization>
+       <AdditionalIncludeDirectories>external\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+       <PreprocessorDefinitions>DLL_EXPORT;_DEBUG;WIN32;_WINDOWS;USE_STBIMAGE;LOAD_AVIF;LOAD_AVIF_DYNAMIC="libavif-16.dll";LOAD_BMP;LOAD_GIF;LOAD_JPG;LOAD_LBM;LOAD_PCX;LOAD_PNG;LOAD_PNM;LOAD_QOI;LOAD_SVG;LOAD_TGA;LOAD_TIF;LOAD_TIF_DYNAMIC="libtiff-6.dll";LOAD_WEBP;LOAD_WEBP_DYNAMIC="libwebp-7.dll";LOAD_WEBPDEMUX_DYNAMIC="libwebpdemux-2.dll";LOAD_XCF;LOAD_XPM;LOAD_XV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+       <WarningLevel>Level3</WarningLevel>
+       <DebugInformationFormat>OldStyle</DebugInformationFormat>
+       <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
+@@ -128,10 +130,11 @@
+     <ClCompile>
+       <AdditionalIncludeDirectories>external\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+       <PreprocessorDefinitions>DLL_EXPORT;_DEBUG;WIN32;_WINDOWS;USE_STBIMAGE;LOAD_AVIF;LOAD_AVIF_DYNAMIC="libavif-16.dll";LOAD_BMP;LOAD_GIF;LOAD_JPG;LOAD_LBM;LOAD_PCX;LOAD_PNG;LOAD_PNM;LOAD_QOI;LOAD_SVG;LOAD_TGA;LOAD_TIF;LOAD_TIF_DYNAMIC="libtiff-6.dll";LOAD_WEBP;LOAD_WEBP_DYNAMIC="libwebp-7.dll";LOAD_WEBPDEMUX_DYNAMIC="libwebpdemux-2.dll";LOAD_XCF;LOAD_XPM;LOAD_XV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+       <WarningLevel>Level3</WarningLevel>
+       <Optimization>Disabled</Optimization>
+       <DebugInformationFormat>OldStyle</DebugInformationFormat>
++      <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
+     </ClCompile>
+     <ResourceCompile>
+       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+@@ -154,10 +157,16 @@
      </Midl>
      <ClCompile>
        <AdditionalIncludeDirectories>external\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 -      <PreprocessorDefinitions>DLL_EXPORT;NDEBUG;WIN32;_WINDOWS;USE_STBIMAGE;LOAD_AVIF;LOAD_AVIF_DYNAMIC="libavif-16.dll";LOAD_BMP;LOAD_GIF;LOAD_JPG;LOAD_LBM;LOAD_PCX;LOAD_PNG;LOAD_PNM;LOAD_QOI;LOAD_SVG;LOAD_TGA;LOAD_TIF;LOAD_TIF_DYNAMIC="libtiff-6.dll";LOAD_WEBP;LOAD_WEBP_DYNAMIC="libwebp-7.dll";LOAD_WEBPDEMUX_DYNAMIC="libwebpdemux-2.dll";LOAD_XCF;LOAD_XPM;LOAD_XV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
 +      <PreprocessorDefinitions>DLL_EXPORT;NDEBUG;WIN32;_WINDOWS;USE_STBIMAGE;LOAD_PNG;LOAD_WEBP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
        <WarningLevel>Level3</WarningLevel>
 -      <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
 +      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
@@ -115,25 +121,23 @@ index 041bc2ab..56e80b00 100644
      </ClCompile>
      <ResourceCompile>
        <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-@@ -166,6 +174,9 @@
-     <Link>
-       <AdditionalDependencies>SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+@@ -167,6 +176,7 @@
        <SubSystem>Windows</SubSystem>
-+      <OptimizeReferences>true</OptimizeReferences>
-+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+       <OptimizeReferences>true</OptimizeReferences>
+       <EnableCOMDATFolding>true</EnableCOMDATFolding>
 +      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
      </Link>
    </ItemDefinitionGroup>
    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-@@ -180,10 +191,16 @@
+@@ -181,9 +191,16 @@
      </Midl>
      <ClCompile>
        <AdditionalIncludeDirectories>external\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 -      <PreprocessorDefinitions>DLL_EXPORT;NDEBUG;WIN32;_WINDOWS;USE_STBIMAGE;LOAD_AVIF;LOAD_AVIF_DYNAMIC="libavif-16.dll";LOAD_BMP;LOAD_GIF;LOAD_JPG;LOAD_LBM;LOAD_PCX;LOAD_PNG;LOAD_PNM;LOAD_QOI;LOAD_SVG;LOAD_TGA;LOAD_TIF;LOAD_TIF_DYNAMIC="libtiff-6.dll";LOAD_WEBP;LOAD_WEBP_DYNAMIC="libwebp-7.dll";LOAD_WEBPDEMUX_DYNAMIC="libwebpdemux-2.dll";LOAD_XCF;LOAD_XPM;LOAD_XV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
 +      <PreprocessorDefinitions>DLL_EXPORT;NDEBUG;WIN32;_WINDOWS;USE_STBIMAGE;LOAD_PNG;LOAD_WEBP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
        <WarningLevel>Level3</WarningLevel>
--      <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
 +      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
 +      <Optimization>MinSpace</Optimization>
 +      <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -144,12 +148,10 @@ index 041bc2ab..56e80b00 100644
      </ClCompile>
      <ResourceCompile>
        <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-@@ -191,9 +208,100 @@
-     <Link>
-       <SubSystem>Windows</SubSystem>
+@@ -193,9 +210,98 @@
        <AdditionalDependencies>SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-+      <OptimizeReferences>true</OptimizeReferences>
-+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+       <OptimizeReferences>true</OptimizeReferences>
+       <EnableCOMDATFolding>true</EnableCOMDATFolding>
 +      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
      </Link>
    </ItemDefinitionGroup>
@@ -245,7 +247,7 @@ index 041bc2ab..56e80b00 100644
      <ClCompile Include="..\src\IMG.c" />
      <ClCompile Include="..\src\IMG_avif.c" />
      <ClCompile Include="..\src\IMG_bmp.c" />
-@@ -219,6 +327,44 @@
+@@ -221,6 +327,44 @@
      <ResourceCompile Include="..\src\version.rc" />
    </ItemGroup>
    <ItemGroup>
@@ -694,70 +696,14 @@ index be762419..ea2573ea 100644
    </ItemGroup>
    <ItemGroup>
      <ResourceCompile Include="..\src\version.rc">
-diff --git a/external/SDL b/external/SDL
-deleted file mode 160000
-index 53bf2baa..00000000
---- a/external/SDL
-+++ /dev/null
-@@ -1 +0,0 @@
--Subproject commit 53bf2baac3ca32f49c62963a15e6140c696a33cf
-diff --git a/external/aom b/external/aom
-deleted file mode 160000
-index 01d1b146..00000000
---- a/external/aom
-+++ /dev/null
-@@ -1 +0,0 @@
--Subproject commit 01d1b1469555c0163a10e9cb192aabb5a218a4a9
-diff --git a/external/dav1d b/external/dav1d
-deleted file mode 160000
-index aabfea0c..00000000
---- a/external/dav1d
-+++ /dev/null
-@@ -1 +0,0 @@
--Subproject commit aabfea0c42f9df86268fe1c578e8c9b50d28fcc9
-diff --git a/external/jpeg b/external/jpeg
-deleted file mode 160000
-index a2b96a05..00000000
---- a/external/jpeg
-+++ /dev/null
-@@ -1 +0,0 @@
--Subproject commit a2b96a055f06083bbfe06a75a87f91385bae9606
-diff --git a/external/libavif b/external/libavif
-deleted file mode 160000
-index 5bcd7d03..00000000
---- a/external/libavif
-+++ /dev/null
-@@ -1 +0,0 @@
--Subproject commit 5bcd7d031e058b171364916a4dbef5fc5d6a28e2
-diff --git a/external/libjxl b/external/libjxl
-deleted file mode 160000
-index 19cfa74a..00000000
---- a/external/libjxl
-+++ /dev/null
-@@ -1 +0,0 @@
--Subproject commit 19cfa74afdc33f10b9781dfaf419cb50d88e1335
-diff --git a/external/libtiff b/external/libtiff
-deleted file mode 160000
-index f0b67bbb..00000000
---- a/external/libtiff
-+++ /dev/null
-@@ -1 +0,0 @@
--Subproject commit f0b67bbb55584c7c48dd2e0a20823c3c3ed0dc75
 diff --git a/external/libwebp b/external/libwebp
 --- a/external/libwebp
 +++ b/external/libwebp
 @@ -1 +1 @@
 -Subproject commit fa992316e4517b25a4e667a3668b930170becd56
 +Subproject commit fa992316e4517b25a4e667a3668b930170becd56-dirty
-diff --git a/external/zlib b/external/zlib
-deleted file mode 160000
-index c4ea85ed..00000000
---- a/external/zlib
-+++ /dev/null
-@@ -1 +0,0 @@
--Subproject commit c4ea85eda90be5d47bb832108a520b4e82fe19c4
 diff --git a/include/SDL3_image/SDL_image.h b/include/SDL3_image/SDL_image.h
-index ae40e751..5460e50b 100644
+index 9775ee61..b73aac4e 100644
 --- a/include/SDL3_image/SDL_image.h
 +++ b/include/SDL3_image/SDL_image.h
 @@ -1,3 +1,6 @@
@@ -766,8 +712,8 @@ index ae40e751..5460e50b 100644
 +
  /*
    SDL_image:  An example image loading library for use with SDL
-   Copyright (C) 1997-2024 Sam Lantinga <slouken@libsdl.org>
-@@ -2096,6 +2099,10 @@ extern SDL_DECLSPEC IMG_Animation * SDLCALL IMG_LoadGIFAnimation_IO(SDL_IOStream
+   Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+@@ -2101,6 +2104,10 @@ extern SDL_DECLSPEC IMG_Animation * SDLCALL IMG_LoadGIFAnimation_IO(SDL_IOStream
   */
  extern SDL_DECLSPEC IMG_Animation * SDLCALL IMG_LoadWEBPAnimation_IO(SDL_IOStream *src);
  
@@ -779,10 +725,10 @@ index ae40e751..5460e50b 100644
  #ifdef __cplusplus
  }
 diff --git a/src/IMG_png.c b/src/IMG_png.c
-index 6947be39..54c92217 100644
+index f0adb019..d6507462 100644
 --- a/src/IMG_png.c
 +++ b/src/IMG_png.c
-@@ -559,7 +559,7 @@ SDL_Surface *IMG_LoadPNG_IO(SDL_IOStream *src)
+@@ -562,7 +562,7 @@ SDL_Surface *IMG_LoadPNG_IO(SDL_IOStream *src)
  
  #if SDL_IMAGE_SAVE_PNG
  
@@ -803,48 +749,3 @@ index c7b7a338..100c9302 100644
 +    WebPGetDemuxVersion;
    local: *;
  };
-diff --git a/src/miniz.h b/src/miniz.h
-index 66f97951..6adadf5e 100644
---- a/src/miniz.h
-+++ b/src/miniz.h
-@@ -2370,15 +2370,14 @@ static MZ_FORCEINLINE void tdefl_find_match(tdefl_compressor *d, mz_uint lookahe
-     for ( ; ; )
-     {
-       if (--num_probes_left == 0) return;
--      #define TDEFL_PROBE do { \
-+      #define TDEFL_PROBE \
-         next_probe_pos = d->m_next[probe_pos]; \
-         if ((!next_probe_pos) || ((dist = (mz_uint16)(lookahead_pos - next_probe_pos)) > max_dist)) return; \
-         probe_pos = next_probe_pos & TDEFL_LZ_DICT_SIZE_MASK; \
-         if (TDEFL_READ_UNALIGNED_WORD(&d->m_dict[probe_pos + match_len - 1]) == c01) break;
--      } MZ_MACRO_END
--      TDEFL_PROBE;
--      TDEFL_PROBE;
--      TDEFL_PROBE;
-+      TDEFL_PROBE
-+      TDEFL_PROBE
-+      TDEFL_PROBE
-     }
-     if (!dist) break;
-     q = (const mz_uint16*)(d->m_dict + probe_pos);
-@@ -2410,15 +2409,14 @@ static MZ_FORCEINLINE void tdefl_find_match(tdefl_compressor *d, mz_uint lookahe
-     for ( ; ; )
-     {
-       if (--num_probes_left == 0) return;
--      #define TDEFL_PROBE do { \
-+      #define TDEFL_PROBE \
-         next_probe_pos = d->m_next[probe_pos]; \
-         if ((!next_probe_pos) || ((dist = (mz_uint16)(lookahead_pos - next_probe_pos)) > max_dist)) return; \
-         probe_pos = next_probe_pos & TDEFL_LZ_DICT_SIZE_MASK; \
--        if ((d->m_dict[probe_pos + match_len] == c0) && (d->m_dict[probe_pos + match_len - 1] == c1)) break; \
--      } MZ_MACRO_END
--      TDEFL_PROBE;
--      TDEFL_PROBE;
--      TDEFL_PROBE;
-+        if ((d->m_dict[probe_pos + match_len] == c0) && (d->m_dict[probe_pos + match_len - 1] == c1)) break;
-+      TDEFL_PROBE
-+      TDEFL_PROBE
-+      TDEFL_PROBE
-     }
-     if (!dist) break;
-     p = s; q = d->m_dict + probe_pos;
