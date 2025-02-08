@@ -1,5 +1,5 @@
 diff --git a/VisualC/SDL/SDL.vcxproj b/VisualC/SDL/SDL.vcxproj
-index 134c730c3..b0f634035 100644
+index 79d5c4681..0db3c6998 100644
 --- a/VisualC/SDL/SDL.vcxproj
 +++ b/VisualC/SDL/SDL.vcxproj
 @@ -28,6 +28,7 @@
@@ -18,7 +18,7 @@ index 134c730c3..b0f634035 100644
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
      <ConfigurationType>DynamicLibrary</ConfigurationType>
-@@ -179,15 +181,18 @@
+@@ -182,15 +184,18 @@
        <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
        <PreprocessorDefinitions>DLL_EXPORT;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
        <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -40,7 +40,7 @@ index 134c730c3..b0f634035 100644
      </ClCompile>
      <ResourceCompile>
        <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-@@ -198,6 +203,7 @@
+@@ -201,6 +206,7 @@
        <SubSystem>Windows</SubSystem>
        <OptimizeReferences>true</OptimizeReferences>
        <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -48,7 +48,7 @@ index 134c730c3..b0f634035 100644
      </Link>
    </ItemDefinitionGroup>
    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-@@ -215,12 +221,16 @@
+@@ -219,12 +225,16 @@
        <BufferSecurityCheck>false</BufferSecurityCheck>
        <WarningLevel>Level4</WarningLevel>
        <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -67,7 +67,7 @@ index 134c730c3..b0f634035 100644
      </ClCompile>
      <ResourceCompile>
        <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-@@ -231,6 +241,7 @@
+@@ -235,6 +245,7 @@
        <SubSystem>Windows</SubSystem>
        <OptimizeReferences>true</OptimizeReferences>
        <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -75,7 +75,7 @@ index 134c730c3..b0f634035 100644
      </Link>
    </ItemDefinitionGroup>
    <ItemDefinitionGroup Condition="'$(TreatWarningsAsError)'!=''">
-@@ -730,4 +741,4 @@
+@@ -735,4 +746,4 @@
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
    <ImportGroup Label="ExtensionTargets">
    </ImportGroup>
@@ -212,7 +212,7 @@ index b6f38acbe..a9af80a74 100644
  
  /**
 diff --git a/include/SDL3/SDL_revision.h b/include/SDL3/SDL_revision.h
-index f0f57cd59..12075d0c7 100644
+index f0f57cd59..c7cf07689 100644
 --- a/include/SDL3/SDL_revision.h
 +++ b/include/SDL3/SDL_revision.h
 @@ -11,46 +11,29 @@
@@ -267,10 +267,10 @@ index f0f57cd59..12075d0c7 100644
 -#elif defined(SDL_VENDOR_INFO)
 -#define SDL_REVISION SDL_VENDOR_INFO
 +#ifdef SDL_VENDOR_INFO
-+#define SDL_REVISION "SDL3-3.2.2-release-3.2.2 (" SDL_VENDOR_INFO ")"
++#define SDL_REVISION "SDL3-3.2.4-release-3.2.4 (" SDL_VENDOR_INFO ")"
  #else
 -#define SDL_REVISION ""
-+#define SDL_REVISION "SDL3-3.2.2-release-3.2.2"
++#define SDL_REVISION "SDL3-3.2.4-release-3.2.4"
  #endif
  
  #endif /* SDL_revision_h_ */
@@ -513,34 +513,34 @@ index 442751764..84b4e89d2 100644
  
  #endif /* SDL_build_config_windows_h_ */
 diff --git a/src/dynapi/SDL_dynapi.sym b/src/dynapi/SDL_dynapi.sym
-index b4dcc3839..7cbcc08f1 100644
+index 73f34843d..8d64f9367 100644
 --- a/src/dynapi/SDL_dynapi.sym
 +++ b/src/dynapi/SDL_dynapi.sym
-@@ -1233,6 +1233,7 @@ SDL3_0.0.0 {
-     SDL_AudioStreamDevicePaused;
+@@ -1234,6 +1234,7 @@ SDL3_0.0.0 {
      SDL_ClickTrayEntry;
      SDL_UpdateTrays;
+     SDL_StretchSurface;
 +    SDL_GetGamepadNumMappings;
      # extra symbols go here (don't modify this line)
    local: *;
  };
 diff --git a/src/dynapi/SDL_dynapi_overrides.h b/src/dynapi/SDL_dynapi_overrides.h
-index d90b6fd07..68caa4557 100644
+index 77fd553c4..18afcaf12 100644
 --- a/src/dynapi/SDL_dynapi_overrides.h
 +++ b/src/dynapi/SDL_dynapi_overrides.h
-@@ -1258,3 +1258,4 @@
- #define SDL_AudioStreamDevicePaused SDL_AudioStreamDevicePaused_REAL
+@@ -1259,3 +1259,4 @@
  #define SDL_ClickTrayEntry SDL_ClickTrayEntry_REAL
  #define SDL_UpdateTrays SDL_UpdateTrays_REAL
+ #define SDL_StretchSurface SDL_StretchSurface_REAL
 +#define SDL_GetGamepadNumMappings SDL_GetGamepadNumMappings_REAL
 diff --git a/src/dynapi/SDL_dynapi_procs.h b/src/dynapi/SDL_dynapi_procs.h
-index e57603d18..a5c513938 100644
+index e86ac2a32..56136d942 100644
 --- a/src/dynapi/SDL_dynapi_procs.h
 +++ b/src/dynapi/SDL_dynapi_procs.h
-@@ -1266,3 +1266,4 @@ SDL_DYNAPI_PROC(SDL_ThreadState,SDL_GetThreadState,(SDL_Thread *a),(a),return)
- SDL_DYNAPI_PROC(bool,SDL_AudioStreamDevicePaused,(SDL_AudioStream *a),(a),return)
+@@ -1267,3 +1267,4 @@ SDL_DYNAPI_PROC(bool,SDL_AudioStreamDevicePaused,(SDL_AudioStream *a),(a),return
  SDL_DYNAPI_PROC(void,SDL_ClickTrayEntry,(SDL_TrayEntry *a),(a),)
  SDL_DYNAPI_PROC(void,SDL_UpdateTrays,(void),(),)
+ SDL_DYNAPI_PROC(bool,SDL_StretchSurface,(SDL_Surface *a,const SDL_Rect *b,SDL_Surface *c,const SDL_Rect *d,SDL_ScaleMode e),(a,b,c,d,e),return)
 +SDL_DYNAPI_PROC(int,SDL_GetGamepadNumMappings,(void),(),return)
 diff --git a/src/io/SDL_iostream.c b/src/io/SDL_iostream.c
 index 989f3b9c4..fd663c1eb 100644
@@ -574,10 +574,10 @@ index 989f3b9c4..fd663c1eb 100644
      size_t size_read;
      char *data = NULL, *newdata;
 diff --git a/src/joystick/SDL_gamepad.c b/src/joystick/SDL_gamepad.c
-index d931ed23a..163da9258 100644
+index 2efa9c305..8a6d5f009 100644
 --- a/src/joystick/SDL_gamepad.c
 +++ b/src/joystick/SDL_gamepad.c
-@@ -2207,6 +2207,24 @@ char **SDL_GetGamepadMappings(int *count)
+@@ -2260,6 +2260,24 @@ char **SDL_GetGamepadMappings(int *count)
      return result;
  }
  
