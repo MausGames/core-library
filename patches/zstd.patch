@@ -37,47 +37,8 @@ index aaba4788..cbac0733 100644
 -</Project>
 +</Project>
 \ No newline at end of file
-diff --git a/build/VS2010/fullbench-dll/fullbench-dll.vcxproj b/build/VS2010/fullbench-dll/fullbench-dll.vcxproj
-index befdc044..6d771108 100644
---- a/build/VS2010/fullbench-dll/fullbench-dll.vcxproj
-+++ b/build/VS2010/fullbench-dll/fullbench-dll.vcxproj
-@@ -30,23 +30,27 @@
-     <ConfigurationType>Application</ConfigurationType>
-     <UseDebugLibraries>true</UseDebugLibraries>
-     <CharacterSet>MultiByte</CharacterSet>
-+    <PlatformToolset>v143</PlatformToolset>
-   </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-     <ConfigurationType>Application</ConfigurationType>
-     <UseDebugLibraries>true</UseDebugLibraries>
-     <CharacterSet>MultiByte</CharacterSet>
-+    <PlatformToolset>v143</PlatformToolset>
-   </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-     <ConfigurationType>Application</ConfigurationType>
-     <UseDebugLibraries>false</UseDebugLibraries>
-     <WholeProgramOptimization>true</WholeProgramOptimization>
-     <CharacterSet>MultiByte</CharacterSet>
-+    <PlatformToolset>v143</PlatformToolset>
-   </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-     <ConfigurationType>Application</ConfigurationType>
-     <UseDebugLibraries>false</UseDebugLibraries>
-     <WholeProgramOptimization>true</WholeProgramOptimization>
-     <CharacterSet>MultiByte</CharacterSet>
-+    <PlatformToolset>v143</PlatformToolset>
-   </PropertyGroup>
-   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-   <ImportGroup Label="ExtensionSettings">
-@@ -186,4 +190,4 @@
-   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-   <ImportGroup Label="ExtensionTargets">
-   </ImportGroup>
--</Project>
-+</Project>
-\ No newline at end of file
 diff --git a/build/VS2010/fullbench/fullbench.vcxproj b/build/VS2010/fullbench/fullbench.vcxproj
-index 2e0a042b..80d1ead8 100644
+index c78a72ec..f5d870ee 100644
 --- a/build/VS2010/fullbench/fullbench.vcxproj
 +++ b/build/VS2010/fullbench/fullbench.vcxproj
 @@ -30,23 +30,27 @@
@@ -108,7 +69,7 @@ index 2e0a042b..80d1ead8 100644
    </PropertyGroup>
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
    <ImportGroup Label="ExtensionSettings">
-@@ -215,4 +219,4 @@
+@@ -217,4 +221,4 @@
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
    <ImportGroup Label="ExtensionTargets">
    </ImportGroup>
@@ -116,7 +77,7 @@ index 2e0a042b..80d1ead8 100644
 +</Project>
 \ No newline at end of file
 diff --git a/build/VS2010/fuzzer/fuzzer.vcxproj b/build/VS2010/fuzzer/fuzzer.vcxproj
-index 91974ec7..d997407c 100644
+index ccbd2517..dd7cdc08 100644
 --- a/build/VS2010/fuzzer/fuzzer.vcxproj
 +++ b/build/VS2010/fuzzer/fuzzer.vcxproj
 @@ -30,23 +30,27 @@
@@ -147,7 +108,7 @@ index 91974ec7..d997407c 100644
    </PropertyGroup>
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
    <ImportGroup Label="ExtensionSettings">
-@@ -220,4 +224,4 @@
+@@ -221,4 +225,4 @@
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
    <ImportGroup Label="ExtensionTargets">
    </ImportGroup>
@@ -155,10 +116,10 @@ index 91974ec7..d997407c 100644
 +</Project>
 \ No newline at end of file
 diff --git a/build/VS2010/libzstd-dll/libzstd-dll.vcxproj b/build/VS2010/libzstd-dll/libzstd-dll.vcxproj
-index 97ad2fcb..7c414f1b 100644
+index 6925e0f9..3b8ec535 100644
 --- a/build/VS2010/libzstd-dll/libzstd-dll.vcxproj
 +++ b/build/VS2010/libzstd-dll/libzstd-dll.vcxproj
-@@ -104,23 +104,27 @@
+@@ -105,23 +105,27 @@
      <ConfigurationType>DynamicLibrary</ConfigurationType>
      <UseDebugLibraries>true</UseDebugLibraries>
      <CharacterSet>MultiByte</CharacterSet>
@@ -186,7 +147,7 @@ index 97ad2fcb..7c414f1b 100644
    </PropertyGroup>
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
    <ImportGroup Label="ExtensionSettings">
-@@ -204,13 +208,15 @@
+@@ -205,13 +209,15 @@
        <WarningLevel>Level4</WarningLevel>
        <PrecompiledHeader>
        </PrecompiledHeader>
@@ -205,7 +166,7 @@ index 97ad2fcb..7c414f1b 100644
      </ClCompile>
      <Link>
        <SubSystem>Console</SubSystem>
-@@ -225,16 +231,18 @@
+@@ -226,16 +232,18 @@
        <WarningLevel>Level4</WarningLevel>
        <PrecompiledHeader>
        </PrecompiledHeader>
@@ -227,7 +188,7 @@ index 97ad2fcb..7c414f1b 100644
      </ClCompile>
      <Link>
        <SubSystem>Console</SubSystem>
-@@ -246,4 +254,4 @@
+@@ -247,4 +255,4 @@
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
    <ImportGroup Label="ExtensionTargets">
    </ImportGroup>
@@ -235,10 +196,10 @@ index 97ad2fcb..7c414f1b 100644
 +</Project>
 \ No newline at end of file
 diff --git a/build/VS2010/libzstd/libzstd.vcxproj b/build/VS2010/libzstd/libzstd.vcxproj
-index 614e6292..81fe27e1 100644
+index 82a2d826..3893744e 100644
 --- a/build/VS2010/libzstd/libzstd.vcxproj
 +++ b/build/VS2010/libzstd/libzstd.vcxproj
-@@ -102,17 +102,21 @@
+@@ -103,17 +103,21 @@
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
      <UseDebugLibraries>true</UseDebugLibraries>
@@ -260,7 +221,7 @@ index 614e6292..81fe27e1 100644
    </PropertyGroup>
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
    <ImportGroup Label="ExtensionSettings">
-@@ -239,4 +243,4 @@
+@@ -240,4 +244,4 @@
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
    <ImportGroup Label="ExtensionTargets">
    </ImportGroup>
@@ -268,10 +229,10 @@ index 614e6292..81fe27e1 100644
 +</Project>
 \ No newline at end of file
 diff --git a/build/VS2010/zstd/zstd.vcxproj b/build/VS2010/zstd/zstd.vcxproj
-index 5a5237f0..a3c93545 100644
+index 0558687f..6d08900c 100644
 --- a/build/VS2010/zstd/zstd.vcxproj
 +++ b/build/VS2010/zstd/zstd.vcxproj
-@@ -122,23 +122,27 @@
+@@ -123,23 +123,27 @@
      <ConfigurationType>Application</ConfigurationType>
      <UseDebugLibraries>true</UseDebugLibraries>
      <CharacterSet>MultiByte</CharacterSet>
@@ -299,7 +260,7 @@ index 5a5237f0..a3c93545 100644
    </PropertyGroup>
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
    <ImportGroup Label="ExtensionSettings">
-@@ -262,4 +266,4 @@
+@@ -263,4 +267,4 @@
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
    <ImportGroup Label="ExtensionTargets">
    </ImportGroup>
@@ -307,17 +268,17 @@ index 5a5237f0..a3c93545 100644
 +</Project>
 \ No newline at end of file
 diff --git a/build/cmake/CMakeModules/AddZstdCompilationFlags.cmake b/build/cmake/CMakeModules/AddZstdCompilationFlags.cmake
-index 5f179989..52645ed8 100644
+index 5f381c65..0db887bf 100644
 --- a/build/cmake/CMakeModules/AddZstdCompilationFlags.cmake
 +++ b/build/cmake/CMakeModules/AddZstdCompilationFlags.cmake
-@@ -56,8 +56,8 @@ macro(ADD_ZSTD_COMPILATION_FLAGS)
+@@ -59,8 +59,8 @@ macro(ADD_ZSTD_COMPILATION_FLAGS)
          # It's not necessary, but can be employed for specific purposes.
          # Note that zstd source code is compatible with both C++98 and above
          # and C-gnu90 (c90 + long long + variadic macros ) and above
 -        # EnableCompilerFlag("-std=c++11" false true) # Set C++ compilation to c++11 standard
--        # EnableCompilerFlag("-std=c99" true false)   # Set C compiation to c99 standard
+-        # EnableCompilerFlag("-std=c99" true false)   # Set C compilation to c99 standard
 +        EnableCompilerFlag("-std=c++11" false true false) # Set C++ compilation to c++11 standard
-+        EnableCompilerFlag("-std=c99" true false false)   # Set C compiation to c99 standard
++        EnableCompilerFlag("-std=c99" true false false)   # Set C compilation to c99 standard
          if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND MSVC)
              # clang-cl normally maps -Wall to -Weverything.
              EnableCompilerFlag("/clang:-Wall" true true false)
