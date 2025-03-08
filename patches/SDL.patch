@@ -1,5 +1,5 @@
 diff --git a/VisualC/SDL/SDL.vcxproj b/VisualC/SDL/SDL.vcxproj
-index 79d5c4681..0db3c6998 100644
+index a15978a29..433b31d71 100644
 --- a/VisualC/SDL/SDL.vcxproj
 +++ b/VisualC/SDL/SDL.vcxproj
 @@ -28,6 +28,7 @@
@@ -75,7 +75,7 @@ index 79d5c4681..0db3c6998 100644
      </Link>
    </ItemDefinitionGroup>
    <ItemDefinitionGroup Condition="'$(TreatWarningsAsError)'!=''">
-@@ -735,4 +746,4 @@
+@@ -741,4 +752,4 @@
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
    <ImportGroup Label="ExtensionTargets">
    </ImportGroup>
@@ -83,7 +83,7 @@ index 79d5c4681..0db3c6998 100644
 +</Project>
 \ No newline at end of file
 diff --git a/include/SDL3/SDL_assert.h b/include/SDL3/SDL_assert.h
-index 09b3b478f..2c6d8095f 100644
+index 6c90acc02..c25cbff36 100644
 --- a/include/SDL3/SDL_assert.h
 +++ b/include/SDL3/SDL_assert.h
 @@ -1,3 +1,6 @@
@@ -93,7 +93,7 @@ index 09b3b478f..2c6d8095f 100644
  /*
    Simple DirectMedia Layer
    Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
-@@ -227,11 +230,6 @@ disable assertions.
+@@ -229,11 +232,6 @@ disable assertions.
   * \since This macro is available since SDL 3.2.0.
   */
  #define SDL_NULL_WHILE_LOOP_CONDITION (0)
@@ -105,7 +105,7 @@ index 09b3b478f..2c6d8095f 100644
  #else
  #define SDL_NULL_WHILE_LOOP_CONDITION (0)
  #endif
-@@ -360,7 +358,7 @@ extern SDL_DECLSPEC SDL_AssertState SDLCALL SDL_ReportAssertion(SDL_AssertData *
+@@ -362,7 +360,7 @@ extern SDL_DECLSPEC SDL_AssertState SDLCALL SDL_ReportAssertion(SDL_AssertData *
  #define SDL_enabled_assert(condition) \
      do { \
          while ( !(condition) ) { \
@@ -114,7 +114,7 @@ index 09b3b478f..2c6d8095f 100644
              const SDL_AssertState sdl_assert_state = SDL_ReportAssertion(&sdl_assert_data, SDL_FUNCTION, SDL_FILE, SDL_LINE); \
              if (sdl_assert_state == SDL_ASSERTION_RETRY) { \
                  continue; /* go again. */ \
-@@ -371,6 +369,26 @@ extern SDL_DECLSPEC SDL_AssertState SDLCALL SDL_ReportAssertion(SDL_AssertData *
+@@ -373,6 +371,26 @@ extern SDL_DECLSPEC SDL_AssertState SDLCALL SDL_ReportAssertion(SDL_AssertData *
          } \
      } while (SDL_NULL_WHILE_LOOP_CONDITION)
  
@@ -183,7 +183,7 @@ index 99f8b6593..49235d7be 100644
   * Get the gamepad mapping string for a given GUID.
   *
 diff --git a/include/SDL3/SDL_pixels.h b/include/SDL3/SDL_pixels.h
-index b6f38acbe..a9af80a74 100644
+index 4127ac06c..395c91229 100644
 --- a/include/SDL3/SDL_pixels.h
 +++ b/include/SDL3/SDL_pixels.h
 @@ -1,3 +1,6 @@
@@ -212,7 +212,7 @@ index b6f38acbe..a9af80a74 100644
  
  /**
 diff --git a/include/SDL3/SDL_revision.h b/include/SDL3/SDL_revision.h
-index f0f57cd59..c7cf07689 100644
+index f0f57cd59..db9618a7f 100644
 --- a/include/SDL3/SDL_revision.h
 +++ b/include/SDL3/SDL_revision.h
 @@ -11,46 +11,29 @@
@@ -267,10 +267,10 @@ index f0f57cd59..c7cf07689 100644
 -#elif defined(SDL_VENDOR_INFO)
 -#define SDL_REVISION SDL_VENDOR_INFO
 +#ifdef SDL_VENDOR_INFO
-+#define SDL_REVISION "SDL3-3.2.4-release-3.2.4 (" SDL_VENDOR_INFO ")"
++#define SDL_REVISION "SDL3-3.2.8-release-3.2.8 (" SDL_VENDOR_INFO ")"
  #else
 -#define SDL_REVISION ""
-+#define SDL_REVISION "SDL3-3.2.4-release-3.2.4"
++#define SDL_REVISION "SDL3-3.2.8-release-3.2.8"
  #endif
  
  #endif /* SDL_revision_h_ */
@@ -430,7 +430,7 @@ index d5fe736e9..20282df84 100644
  /* Enable dialog subsystem */
  #define SDL_DIALOG_DUMMY 1
 diff --git a/include/build_config/SDL_build_config_windows.h b/include/build_config/SDL_build_config_windows.h
-index 442751764..84b4e89d2 100644
+index 442751764..dfd419a51 100644
 --- a/include/build_config/SDL_build_config_windows.h
 +++ b/include/build_config/SDL_build_config_windows.h
 @@ -219,10 +219,10 @@ typedef unsigned int uintptr_t;
@@ -447,7 +447,7 @@ index 442751764..84b4e89d2 100644
  #define SDL_AUDIO_DRIVER_DUMMY 1
  
  /* Enable various input drivers */
-@@ -232,7 +232,7 @@ typedef unsigned int uintptr_t;
+@@ -232,12 +232,12 @@ typedef unsigned int uintptr_t;
  #endif
  #define SDL_JOYSTICK_HIDAPI 1
  #define SDL_JOYSTICK_RAWINPUT 1
@@ -456,6 +456,12 @@ index 442751764..84b4e89d2 100644
  #ifdef HAVE_WINDOWS_GAMING_INPUT_H
  #define SDL_JOYSTICK_WGI 1
  #endif
+ #define SDL_JOYSTICK_XINPUT 1
+-#define SDL_HAPTIC_DINPUT 1
++//#define SDL_HAPTIC_DINPUT 0
+ 
+ /* Enable various process implementations */
+ #define SDL_PROCESS_WINDOWS 1
 @@ -265,33 +265,33 @@ typedef unsigned int uintptr_t;
  
  /* Enable various video drivers */
@@ -502,7 +508,7 @@ index 442751764..84b4e89d2 100644
  
  /* Enable system power support */
  #define SDL_POWER_WINDOWS 1
-@@ -301,7 +301,7 @@ typedef unsigned int uintptr_t;
+@@ -301,7 +301,13 @@ typedef unsigned int uintptr_t;
  #define SDL_FSOPS_WINDOWS 1
  
  /* Enable the camera driver */
@@ -510,6 +516,12 @@ index 442751764..84b4e89d2 100644
 -#define SDL_CAMERA_DRIVER_DUMMY 1
 +//#define SDL_CAMERA_DRIVER_MEDIAFOUNDATION 0
 +//#define SDL_CAMERA_DRIVER_DUMMY 0
++
++#define SDL_AUDIO_DISABLED 1
++#define SDL_RENDER_DISABLED 1
++#define SDL_GPU_DISABLED 1
++#define SDL_HAPTIC_DISABLED 1
++#define SDL_CAMERA_DISABLED 1
  
  #endif /* SDL_build_config_windows_h_ */
 diff --git a/src/dynapi/SDL_dynapi.sym b/src/dynapi/SDL_dynapi.sym
@@ -574,10 +586,10 @@ index 989f3b9c4..fd663c1eb 100644
      size_t size_read;
      char *data = NULL, *newdata;
 diff --git a/src/joystick/SDL_gamepad.c b/src/joystick/SDL_gamepad.c
-index 2efa9c305..8a6d5f009 100644
+index 8486865bf..f64e5b98f 100644
 --- a/src/joystick/SDL_gamepad.c
 +++ b/src/joystick/SDL_gamepad.c
-@@ -2260,6 +2260,24 @@ char **SDL_GetGamepadMappings(int *count)
+@@ -2263,6 +2263,24 @@ char **SDL_GetGamepadMappings(int *count)
      return result;
  }
  
@@ -602,6 +614,90 @@ index 2efa9c305..8a6d5f009 100644
  /*
   * Get the mapping string for this GUID
   */
+diff --git a/src/video/SDL_blit_slow.c b/src/video/SDL_blit_slow.c
+index d0dd4cf32..bca1e1fbf 100644
+--- a/src/video/SDL_blit_slow.c
++++ b/src/video/SDL_blit_slow.c
+@@ -429,27 +429,31 @@ static void ReadFloatPixel(Uint8 *pixels, SlowBlitPixelAccess access, const SDL_
+     float fR = 0.0f, fG = 0.0f, fB = 0.0f, fA = 0.0f;
+     float v[4];
+ 
++    const float div1 = 1.0f / 255.0f;
++    const float div2 = 1.0f / (float)SDL_MAX_UINT16;
++    const float div3 = 1.0f / SDR_white_point;
++
+     switch (access) {
+     case SlowBlitPixelAccess_Index8:
+         pixel = *pixels;
+-        fR = (float)pal->colors[pixel].r / 255.0f;
+-        fG = (float)pal->colors[pixel].g / 255.0f;
+-        fB = (float)pal->colors[pixel].b / 255.0f;
+-        fA = (float)pal->colors[pixel].a / 255.0f;
++        fR = (float)pal->colors[pixel].r * div1;
++        fG = (float)pal->colors[pixel].g * div1;
++        fB = (float)pal->colors[pixel].b * div1;
++        fA = (float)pal->colors[pixel].a * div1;
+         break;
+     case SlowBlitPixelAccess_RGB:
+         DISEMBLE_RGB(pixels, fmt->bytes_per_pixel, fmt, pixel, R, G, B);
+-        fR = (float)R / 255.0f;
+-        fG = (float)G / 255.0f;
+-        fB = (float)B / 255.0f;
++        fR = (float)R * div1;
++        fG = (float)G * div1;
++        fB = (float)B * div1;
+         fA = 1.0f;
+         break;
+     case SlowBlitPixelAccess_RGBA:
+         DISEMBLE_RGBA(pixels, fmt->bytes_per_pixel, fmt, pixel, R, G, B, A);
+-        fR = (float)R / 255.0f;
+-        fG = (float)G / 255.0f;
+-        fB = (float)B / 255.0f;
+-        fA = (float)A / 255.0f;
++        fR = (float)R * div1;
++        fG = (float)G * div1;
++        fB = (float)B * div1;
++        fA = (float)A * div1;
+         break;
+     case SlowBlitPixelAccess_10Bit:
+         pixel = *((Uint32 *)pixels);
+@@ -476,11 +480,11 @@ static void ReadFloatPixel(Uint8 *pixels, SlowBlitPixelAccess access, const SDL_
+     case SlowBlitPixelAccess_Large:
+         switch (SDL_PIXELTYPE(fmt->format)) {
+         case SDL_PIXELTYPE_ARRAYU16:
+-            v[0] = (float)(((Uint16 *)pixels)[0]) / SDL_MAX_UINT16;
+-            v[1] = (float)(((Uint16 *)pixels)[1]) / SDL_MAX_UINT16;
+-            v[2] = (float)(((Uint16 *)pixels)[2]) / SDL_MAX_UINT16;
++            v[0] = (float)(((Uint16 *)pixels)[0]) * div2;
++            v[1] = (float)(((Uint16 *)pixels)[1]) * div2;
++            v[2] = (float)(((Uint16 *)pixels)[2]) * div2;
+             if (fmt->bytes_per_pixel == 8) {
+-                v[3] = (float)(((Uint16 *)pixels)[3]) / SDL_MAX_UINT16;
++                v[3] = (float)(((Uint16 *)pixels)[3]) * div2;
+             } else {
+                 v[3] = 1.0f;
+             }
+@@ -563,14 +567,14 @@ static void ReadFloatPixel(Uint8 *pixels, SlowBlitPixelAccess access, const SDL_
+         fB = SDL_sRGBtoLinear(fB);
+         break;
+     case SDL_TRANSFER_CHARACTERISTICS_PQ:
+-        fR = SDL_PQtoNits(fR) / SDR_white_point;
+-        fG = SDL_PQtoNits(fG) / SDR_white_point;
+-        fB = SDL_PQtoNits(fB) / SDR_white_point;
++        fR = SDL_PQtoNits(fR) * div3;
++        fG = SDL_PQtoNits(fG) * div3;
++        fB = SDL_PQtoNits(fB) * div3;
+         break;
+     case SDL_TRANSFER_CHARACTERISTICS_LINEAR:
+-        fR /= SDR_white_point;
+-        fG /= SDR_white_point;
+-        fB /= SDR_white_point;
++        fR *= div3;
++        fG *= div3;
++        fB *= div3;
+         break;
+     default:
+         // Unknown, leave it alone
 diff --git a/src/video/SDL_egl.c b/src/video/SDL_egl.c
 index 86502549b..a0f4c644f 100644
 --- a/src/video/SDL_egl.c
