@@ -1,5 +1,5 @@
 diff --git a/.gitmodules b/.gitmodules
-index 63aedd6f..51eac75e 100644
+index e4bfc8e1..89c1dda8 100644
 --- a/.gitmodules
 +++ b/.gitmodules
 @@ -1,7 +1,3 @@
@@ -42,7 +42,7 @@ index 63aedd6f..51eac75e 100644
 +	branch = 1.3.2-SDL
 \ No newline at end of file
 diff --git a/VisualC/SDL_image.vcxproj b/VisualC/SDL_image.vcxproj
-index 46e50b7f..37e82aa8 100644
+index e2bca386..613462e7 100644
 --- a/VisualC/SDL_image.vcxproj
 +++ b/VisualC/SDL_image.vcxproj
 @@ -31,6 +31,7 @@
@@ -703,7 +703,7 @@ diff --git a/external/libwebp b/external/libwebp
 -Subproject commit fa992316e4517b25a4e667a3668b930170becd56
 +Subproject commit fa992316e4517b25a4e667a3668b930170becd56-dirty
 diff --git a/include/SDL3_image/SDL_image.h b/include/SDL3_image/SDL_image.h
-index 9775ee61..b73aac4e 100644
+index c029d9d4..03562b76 100644
 --- a/include/SDL3_image/SDL_image.h
 +++ b/include/SDL3_image/SDL_image.h
 @@ -1,3 +1,6 @@
