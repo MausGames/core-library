@@ -9,22 +9,22 @@ _LIBCXX_="$_PATH_/../output/libcxx"
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$_PREFIX_
 
-_CMAKE_FLAGS_="-S .. -B . -DCMAKE_PREFIX_PATH=$_PREFIX_ -DCMAKE_INSTALL_PREFIX=$_PREFIX_ -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_LINKER_TYPE=MOLD -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=TRUE -DCMAKE_POLICY_DEFAULT_CMP0069=NEW -DCMAKE_PLATFORM_NO_VERSIONED_SONAME=TRUE"
+_CMAKE_FLAGS_="-S .. -B . -DCMAKE_PREFIX_PATH=$_PREFIX_ -DCMAKE_INSTALL_PREFIX=$_PREFIX_ -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_LINKER_TYPE=MOLD -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_PLATFORM_NO_VERSIONED_SONAME=TRUE"
 
-_SHARED_FLAGS_="-Os -flto -fno-semantic-interposition -fvisibility=hidden -msse3"
+_SHARED_FLAGS_="-Os -flto -fvisibility=hidden -fno-strict-overflow -fno-stack-protector -fno-semantic-interposition -msse3"
 
 export CC="clang"
 export CXX="clang++"
 export LD="mold"
 export CFLAGS="$_SHARED_FLAGS_ -isystem $_GLIBC_/include"
-export CXXFLAGS="$_SHARED_FLAGS_ -fno-rtti -fno-exceptions -isystem $_LIBCXX_/include/c++/v1 -isystem $_GLIBC_/include -nostdinc++"
-export LDFLAGS="-fuse-ld=mold -flto -L$_LIBCXX_/lib -L/$_GLIBC_/lib -nostdlib++ -l:libc++.so -Wl,-rpath,\$ORIGIN -Wl,--gc-sections -Wl,--icf=all -Wl,--ignore-data-address-equality -Wl,--allow-shlib-undefined -z nodlopen"
+export CXXFLAGS="$_SHARED_FLAGS_ -fvirtual-function-elimination -fforce-emit-vtables -fstrict-vtable-pointers -fno-rtti -fno-exceptions -nostdinc++ -isystem $_LIBCXX_/include/c++/v1 -isystem $_GLIBC_/include"
+export LDFLAGS="-fuse-ld=mold -flto -Wl,-rpath,\$ORIGIN -Wl,--gc-sections -Wl,--icf=all -Wl,--ignore-data-address-equality -Wl,--as-needed -Wl,--allow-shlib-undefined -z nodlopen -nostdlib++ -L$_LIBCXX_/lib -L/$_GLIBC_/lib -l:libc++.so"
 
 cd "$_ROOT_/SDL"
 mkdir build
 cd build
 rm CMakeCache.txt
-cmake $_CMAKE_FLAGS_ -DBUILD_SHARED_LIBS=ON -DSDL_X11_SHARED=ON -DSDL_WAYLAND_SHARED=ON -DSDL_AUDIO=OFF -DSDL_RENDER=OFF -DSDL_GPU=OFF -DSDL_HAPTIC=OFF -DSDL_CAMERA=OFF -DSDL_OPENGLES=OFF -DSDL_VULKAN=OFF -DSDL_KMSDRM=OFF -DSDL_OFFSCREEN=OFF -DSDL_DBUS=OFF -DSDL_IBUS=OFF -DSDL_VIRTUAL_JOYSTICK=OFF -DSDL_RPATH=OFF -DSDL_ASSERTIONS=disabled -DSDL_TESTS=OFF -DSDL_EXAMPLES=OFF
+cmake $_CMAKE_FLAGS_ -DBUILD_SHARED_LIBS=ON -DSDL_X11_SHARED=ON -DSDL_WAYLAND_SHARED=ON -DSDL_AUDIO=OFF -DSDL_RENDER=OFF -DSDL_GPU=OFF -DSDL_HAPTIC=OFF -DSDL_CAMERA=OFF -DSDL_OPENGLES=OFF -DSDL_VULKAN=OFF -DSDL_KMSDRM=OFF -DSDL_OFFSCREEN=OFF -DSDL_VIRTUAL_JOYSTICK=OFF -DSDL_RPATH=OFF -DSDL_ASSERTIONS=disabled -DSDL_TESTS=OFF -DSDL_EXAMPLES=OFF
 cmake --build . --parallel
 cmake --install .
 
@@ -40,7 +40,7 @@ cd "$_ROOT_/SDL_ttf"
 mkdir build
 cd build
 rm CMakeCache.txt
-cmake $_CMAKE_FLAGS_ -DBUILD_SHARED_LIBS=ON -DSDLTTF_HARFBUZZ=ON -DSDLTTF_VENDORED=ON -DSDLTTF_SAMPLES=OFF
+cmake $_CMAKE_FLAGS_ -DBUILD_SHARED_LIBS=ON -DSDLTTF_HARFBUZZ=ON -DSDLTTF_PLUTOSVG=ON -DSDLTTF_VENDORED=ON -DSDLTTF_SAMPLES=OFF
 cmake --build . --parallel
 cmake --install .
 

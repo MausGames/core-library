@@ -8,10 +8,10 @@ _EMSCRIPTEN_="/opt/emsdk/upstream/emscripten"
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$_PREFIX_
 
-_CMAKE_FLAGS_="-S .. -B . -DCMAKE_PREFIX_PATH=$_PREFIX_ -DCMAKE_INSTALL_PREFIX=$_PREFIX_ -DSDL3_DIR=$_PREFIX_/lib/cmake/SDL3 -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=TRUE -DCMAKE_POLICY_DEFAULT_CMP0069=NEW -DCMAKE_TOOLCHAIN_FILE=$_EMSCRIPTEN_/cmake/Modules/Platform/Emscripten.cmake"
+_CMAKE_FLAGS_="-S .. -B . -DCMAKE_PREFIX_PATH=$_PREFIX_ -DCMAKE_INSTALL_PREFIX=$_PREFIX_ -DSDL3_DIR=$_PREFIX_/lib/cmake/SDL3 -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_TOOLCHAIN_FILE=$_EMSCRIPTEN_/cmake/Modules/Platform/Emscripten.cmake"
 
-# fwhole-program-vtables needs to be in CFLAGS to prevent linker errors
-_SHARED_FLAGS_="-Os -flto -fwhole-program-vtables -msse3 -matomics -mbulk-memory -mmultivalue -mmutable-globals -mnontrapping-fptoint -mreference-types -msimd128 -msign-ext"
+# fwhole-program-vtables (and others) needs to be in CFLAGS to prevent strange linker errors
+_SHARED_FLAGS_="-Os -flto -fwhole-program-vtables -fvirtual-function-elimination -fforce-emit-vtables -fstrict-vtable-pointers -fno-strict-overflow -fno-stack-protector -msse3 -matomics -mbulk-memory -mextended-const -mmultivalue -mmutable-globals -mnontrapping-fptoint -mreference-types -msign-ext -msimd128 -mtail-call"
 
 export CFLAGS="$_SHARED_FLAGS_"
 export CXXFLAGS="$_SHARED_FLAGS_ -fno-rtti -fno-exceptions"
@@ -21,7 +21,7 @@ cd "$_ROOT_/SDL"
 mkdir build
 cd build
 rm CMakeCache.txt
-cmake $_CMAKE_FLAGS_ -DBUILD_SHARED_LIBS=OFF -DSDL_AUDIO=OFF -DSDL_RENDER=OFF -DSDL_GPU=OFF -DSDL_HAPTIC=OFF -DSDL_CAMERA=OFF -DSDL_OPENGL=OFF -DSDL_VULKAN=OFF -DSDL_KMSDRM=OFF -DSDL_OFFSCREEN=OFF -DSDL_DBUS=OFF -DSDL_IBUS=OFF -DSDL_VIRTUAL_JOYSTICK=OFF -DSDL_RPATH=OFF -DSDL_ASSERTIONS=disabled -DSDL_TESTS=OFF -DSDL_EXAMPLES=OFF
+cmake $_CMAKE_FLAGS_ -DBUILD_SHARED_LIBS=OFF -DSDL_AUDIO=OFF -DSDL_RENDER=OFF -DSDL_GPU=OFF -DSDL_HAPTIC=OFF -DSDL_CAMERA=OFF -DSDL_OPENGL=OFF -DSDL_VULKAN=OFF -DSDL_KMSDRM=OFF -DSDL_OFFSCREEN=OFF -DSDL_VIRTUAL_JOYSTICK=OFF -DSDL_RPATH=OFF -DSDL_ASSERTIONS=disabled -DSDL_TESTS=OFF -DSDL_EXAMPLES=OFF
 cmake --build . --parallel
 cmake --install .
 
@@ -37,7 +37,7 @@ cd "$_ROOT_/SDL_ttf"
 mkdir build
 cd build
 rm CMakeCache.txt
-cmake $_CMAKE_FLAGS_ -DBUILD_SHARED_LIBS=OFF -DSDLTTF_HARFBUZZ=ON -DSDLTTF_VENDORED=ON -DSDLTTF_SAMPLES=OFF
+cmake $_CMAKE_FLAGS_ -DBUILD_SHARED_LIBS=OFF -DSDLTTF_HARFBUZZ=ON -DSDLTTF_PLUTOSVG=ON -DSDLTTF_VENDORED=ON -DSDLTTF_SAMPLES=OFF
 cmake --build . --parallel
 cmake --install .
 
