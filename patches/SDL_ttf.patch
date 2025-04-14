@@ -1,5 +1,5 @@
 diff --git a/VisualC/SDL_ttf.vcxproj b/VisualC/SDL_ttf.vcxproj
-index a872a7d..6b6a090 100644
+index 6ff7bc2..340b642 100644
 --- a/VisualC/SDL_ttf.vcxproj
 +++ b/VisualC/SDL_ttf.vcxproj
 @@ -31,6 +31,7 @@
@@ -21,7 +21,7 @@ index a872a7d..6b6a090 100644
 @@ -170,9 +172,17 @@
      </Midl>
      <ClCompile>
-       <PreprocessorDefinitions>DLL_EXPORT;WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;TTF_USE_HARFBUZZ=1;FT_PUBLIC_FUNCTION_ATTRIBUTE=;FT_CONFIG_OPTION_USE_HARFBUZZ;FT2_BUILD_LIBRARY;HAVE_FREETYPE;TTF_USE_PLUTOSVG=1;PLUTOSVG_HAS_FREETYPE;PLUTOSVG_BUILD_STATIC;PLUTOVG_BUILD_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <PreprocessorDefinitions>DLL_EXPORT;WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;TTF_USE_HARFBUZZ=1;HAVE_CONFIG_H;FT_PUBLIC_FUNCTION_ATTRIBUTE=;FT_CONFIG_OPTION_USE_HARFBUZZ;FT2_BUILD_LIBRARY;HAVE_FREETYPE;TTF_USE_PLUTOSVG=1;PLUTOSVG_HAS_FREETYPE;PLUTOSVG_BUILD_STATIC;PLUTOVG_BUILD_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
 -      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
 +      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
        <WarningLevel>Level3</WarningLevel>
@@ -49,7 +49,7 @@ index a872a7d..6b6a090 100644
 @@ -197,8 +208,17 @@
      </Midl>
      <ClCompile>
-       <PreprocessorDefinitions>DLL_EXPORT;WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;TTF_USE_HARFBUZZ=1;FT_PUBLIC_FUNCTION_ATTRIBUTE=;FT_CONFIG_OPTION_USE_HARFBUZZ;FT2_BUILD_LIBRARY;HAVE_FREETYPE;TTF_USE_PLUTOSVG=1;PLUTOSVG_HAS_FREETYPE;PLUTOSVG_BUILD_STATIC;PLUTOVG_BUILD_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <PreprocessorDefinitions>DLL_EXPORT;WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;TTF_USE_HARFBUZZ=1;HAVE_CONFIG_H;FT_PUBLIC_FUNCTION_ATTRIBUTE=;FT_CONFIG_OPTION_USE_HARFBUZZ;FT2_BUILD_LIBRARY;HAVE_FREETYPE;TTF_USE_PLUTOSVG=1;PLUTOSVG_HAS_FREETYPE;PLUTOSVG_BUILD_STATIC;PLUTOVG_BUILD_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
 -      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
 +      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
        <WarningLevel>Level3</WarningLevel>
@@ -77,5 +77,5 @@ diff --git a/external/harfbuzz b/external/harfbuzz
 --- a/external/harfbuzz
 +++ b/external/harfbuzz
 @@ -1 +1 @@
--Subproject commit dee43a364347810bccdd5ce2e2079be9511c59eb
-+Subproject commit dee43a364347810bccdd5ce2e2079be9511c59eb-dirty
+-Subproject commit 564bf9818a18709776856533829c0c04950773d6
++Subproject commit 564bf9818a18709776856533829c0c04950773d6-dirty
