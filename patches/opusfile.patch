@@ -145,7 +145,7 @@ index 8e7aa09..b210595 100644
  
  /**Reads more samples from the stream and downmixes to stereo, if necessary.
 diff --git a/win32/VS2015/opusfile.vcxproj b/win32/VS2015/opusfile.vcxproj
-index 413ab5f..15d9b43 100644
+index 413ab5f..4ba3a93 100644
 --- a/win32/VS2015/opusfile.vcxproj
 +++ b/win32/VS2015/opusfile.vcxproj
 @@ -42,47 +42,48 @@
@@ -221,7 +221,7 @@ index 413ab5f..15d9b43 100644
    </PropertyGroup>
    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
      <ClCompile>
-@@ -191,21 +194,24 @@
+@@ -191,21 +194,25 @@
        <WarningLevel>Level3</WarningLevel>
        <PrecompiledHeader>
        </PrecompiledHeader>
@@ -238,9 +238,10 @@ index 413ab5f..15d9b43 100644
 +      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
        <OmitFramePointers>true</OmitFramePointers>
 -      <FloatingPointModel>Fast</FloatingPointModel>
-+      <AdditionalOptions>/Gw %(AdditionalOptions)</AdditionalOptions>
++      <AdditionalOptions>/utf-8 /Gw /Ob3 /Qfast_transcendentals %(AdditionalOptions)</AdditionalOptions>
 +      <ExceptionHandling>false</ExceptionHandling>
 +      <BufferSecurityCheck>false</BufferSecurityCheck>
++      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
      </ClCompile>
      <Link>
        <SubSystem>Windows</SubSystem>
@@ -251,7 +252,7 @@ index 413ab5f..15d9b43 100644
      </Link>
    </ItemDefinitionGroup>
    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-@@ -235,21 +241,24 @@
+@@ -235,21 +242,25 @@
        <WarningLevel>Level3</WarningLevel>
        <PrecompiledHeader>
        </PrecompiledHeader>
@@ -268,9 +269,10 @@ index 413ab5f..15d9b43 100644
 +      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
        <OmitFramePointers>true</OmitFramePointers>
 -      <FloatingPointModel>Fast</FloatingPointModel>
-+      <AdditionalOptions>/Gw %(AdditionalOptions)</AdditionalOptions>
++      <AdditionalOptions>/utf-8 /Gw /Ob3 /Qfast_transcendentals /jumptablerdata %(AdditionalOptions)</AdditionalOptions>
 +      <ExceptionHandling>false</ExceptionHandling>
 +      <BufferSecurityCheck>false</BufferSecurityCheck>
++      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
      </ClCompile>
      <Link>
        <SubSystem>Windows</SubSystem>

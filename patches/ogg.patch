@@ -1,0 +1,119 @@
+diff --git a/win32/VS2015/libogg.vcxproj b/win32/VS2015/libogg.vcxproj
+index 9dec07a..fb8c70b 100644
+--- a/win32/VS2015/libogg.vcxproj
++++ b/win32/VS2015/libogg.vcxproj
+@@ -37,13 +37,13 @@
+   <PropertyGroup Label="Globals">
+     <ProjectGuid>{AFF27A26-C088-444B-BC2A-0BA94A02AFA7}</ProjectGuid>
+     <RootNamespace>libogg</RootNamespace>
+-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
++    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+   </PropertyGroup>
+   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+     <ConfigurationType>StaticLibrary</ConfigurationType>
+     <UseDebugLibraries>true</UseDebugLibraries>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+     <CharacterSet>MultiByte</CharacterSet>
+     <OutDir>$(SolutionDir)$(PlatformName)\$(Configuration)\</OutDir>
+     <IntDir>$(PlatformName)\$(Configuration)\</IntDir>
+@@ -51,7 +51,7 @@
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'" Label="Configuration">
+     <ConfigurationType>DynamicLibrary</ConfigurationType>
+     <UseDebugLibraries>true</UseDebugLibraries>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+     <CharacterSet>MultiByte</CharacterSet>
+     <OutDir>$(SolutionDir)$(PlatformName)\$(Configuration)\</OutDir>
+     <IntDir>$(PlatformName)\$(Configuration)\</IntDir>
+@@ -59,7 +59,7 @@
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+     <ConfigurationType>StaticLibrary</ConfigurationType>
+     <UseDebugLibraries>false</UseDebugLibraries>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+     <CharacterSet>MultiByte</CharacterSet>
+     <OutDir>$(SolutionDir)$(PlatformName)\$(Configuration)\</OutDir>
+@@ -68,7 +68,7 @@
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'" Label="Configuration">
+     <ConfigurationType>DynamicLibrary</ConfigurationType>
+     <UseDebugLibraries>false</UseDebugLibraries>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+     <CharacterSet>MultiByte</CharacterSet>
+     <OutDir>$(SolutionDir)$(PlatformName)\$(Configuration)\</OutDir>
+@@ -77,7 +77,7 @@
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+     <ConfigurationType>StaticLibrary</ConfigurationType>
+     <UseDebugLibraries>true</UseDebugLibraries>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+     <CharacterSet>MultiByte</CharacterSet>
+     <OutDir>$(SolutionDir)$(PlatformName)\$(Configuration)\</OutDir>
+     <IntDir>$(PlatformName)\$(Configuration)\</IntDir>
+@@ -85,7 +85,7 @@
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'" Label="Configuration">
+     <ConfigurationType>DynamicLibrary</ConfigurationType>
+     <UseDebugLibraries>true</UseDebugLibraries>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+     <CharacterSet>MultiByte</CharacterSet>
+     <OutDir>$(SolutionDir)$(PlatformName)\$(Configuration)\</OutDir>
+     <IntDir>$(PlatformName)\$(Configuration)\</IntDir>
+@@ -93,7 +93,7 @@
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+     <ConfigurationType>StaticLibrary</ConfigurationType>
+     <UseDebugLibraries>false</UseDebugLibraries>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+     <CharacterSet>MultiByte</CharacterSet>
+     <OutDir>$(SolutionDir)$(PlatformName)\$(Configuration)\</OutDir>
+@@ -102,7 +102,7 @@
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'" Label="Configuration">
+     <ConfigurationType>DynamicLibrary</ConfigurationType>
+     <UseDebugLibraries>false</UseDebugLibraries>
+-    <PlatformToolset>v140</PlatformToolset>
++    <PlatformToolset>v143</PlatformToolset>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+     <CharacterSet>MultiByte</CharacterSet>
+     <OutDir>$(SolutionDir)$(PlatformName)\$(Configuration)\</OutDir>
+@@ -207,10 +207,15 @@
+       <MinimalRebuild>false</MinimalRebuild>
+       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+       <OmitDefaultLibName>true</OmitDefaultLibName>
+-      <Optimization>MaxSpeed</Optimization>
++      <Optimization>MinSpace</Optimization>
+       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+       <WarningLevel>Level4</WarningLevel>
++      <ExceptionHandling>false</ExceptionHandling>
++      <RuntimeTypeInfo>false</RuntimeTypeInfo>
++      <AdditionalOptions>/utf-8 /Gw /Ob3 /Qfast_transcendentals %(AdditionalOptions)</AdditionalOptions>
++      <OmitFramePointers>true</OmitFramePointers>
++      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+     </ClCompile>
+     <Link>
+       <EnableCOMDATFolding>true</EnableCOMDATFolding>
+@@ -248,10 +253,15 @@
+       <MinimalRebuild>false</MinimalRebuild>
+       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+       <OmitDefaultLibName>true</OmitDefaultLibName>
+-      <Optimization>MaxSpeed</Optimization>
++      <Optimization>MinSpace</Optimization>
+       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+       <WarningLevel>Level4</WarningLevel>
++      <ExceptionHandling>false</ExceptionHandling>
++      <RuntimeTypeInfo>false</RuntimeTypeInfo>
++      <AdditionalOptions>/utf-8 /Gw /Ob3 /Qfast_transcendentals /jumptablerdata %(AdditionalOptions)</AdditionalOptions>
++      <OmitFramePointers>true</OmitFramePointers>
++      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+     </ClCompile>
+     <Link>
+       <EnableCOMDATFolding>true</EnableCOMDATFolding>

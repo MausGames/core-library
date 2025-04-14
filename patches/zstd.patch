@@ -116,7 +116,7 @@ index ccbd2517..dd7cdc08 100644
 +</Project>
 \ No newline at end of file
 diff --git a/build/VS2010/libzstd-dll/libzstd-dll.vcxproj b/build/VS2010/libzstd-dll/libzstd-dll.vcxproj
-index 6925e0f9..3b8ec535 100644
+index 6925e0f9..a6ff0b8c 100644
 --- a/build/VS2010/libzstd-dll/libzstd-dll.vcxproj
 +++ b/build/VS2010/libzstd-dll/libzstd-dll.vcxproj
 @@ -105,23 +105,27 @@
@@ -147,7 +147,7 @@ index 6925e0f9..3b8ec535 100644
    </PropertyGroup>
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
    <ImportGroup Label="ExtensionSettings">
-@@ -205,13 +209,15 @@
+@@ -205,13 +209,16 @@
        <WarningLevel>Level4</WarningLevel>
        <PrecompiledHeader>
        </PrecompiledHeader>
@@ -162,11 +162,12 @@ index 6925e0f9..3b8ec535 100644
 +      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
        <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
 +      <BufferSecurityCheck>false</BufferSecurityCheck>
-+      <AdditionalOptions>/Gw %(AdditionalOptions)</AdditionalOptions>
++      <AdditionalOptions>/utf-8 /Gw /Ob3 /Qfast_transcendentals %(AdditionalOptions)</AdditionalOptions>
++      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
      </ClCompile>
      <Link>
        <SubSystem>Console</SubSystem>
-@@ -226,16 +232,18 @@
+@@ -226,16 +233,19 @@
        <WarningLevel>Level4</WarningLevel>
        <PrecompiledHeader>
        </PrecompiledHeader>
@@ -184,11 +185,12 @@ index 6925e0f9..3b8ec535 100644
        <WholeProgramOptimization>true</WholeProgramOptimization>
        <OmitFramePointers>true</OmitFramePointers>
 +      <BufferSecurityCheck>false</BufferSecurityCheck>
-+      <AdditionalOptions>/Gw %(AdditionalOptions)</AdditionalOptions>
++      <AdditionalOptions>/utf-8 /Gw /Ob3 /Qfast_transcendentals /jumptablerdata %(AdditionalOptions)</AdditionalOptions>
++      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
      </ClCompile>
      <Link>
        <SubSystem>Console</SubSystem>
-@@ -247,4 +255,4 @@
+@@ -247,4 +257,4 @@
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
    <ImportGroup Label="ExtensionTargets">
    </ImportGroup>
