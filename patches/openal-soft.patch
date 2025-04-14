@@ -44,10 +44,10 @@ index 4d2015ce..f2428732 100644
      }
      return deferror;
 diff --git a/alc/alc.cpp b/alc/alc.cpp
-index d378364b..503b0d2e 100644
+index b55fce80..cb4d71bb 100644
 --- a/alc/alc.cpp
 +++ b/alc/alc.cpp
-@@ -2004,7 +2004,7 @@ void alcSetError(al::Device *device, ALCenum errorCode)
+@@ -2013,7 +2013,7 @@ void alcSetError(al::Device *device, ALCenum errorCode)
          if(IsDebuggerPresent())
              DebugBreak();
  #elif defined(SIGTRAP)
@@ -56,16 +56,3 @@ index d378364b..503b0d2e 100644
  #endif
      }
  
-diff --git a/alsoftrc.sample b/alsoftrc.sample
-index 166aae16..d5c46261 100644
---- a/alsoftrc.sample
-+++ b/alsoftrc.sample
-@@ -189,7 +189,7 @@
- #            between 24 and 48 points, with anti-aliasing)
- #  fast_bsinc24 - same as bsinc24, except without interpolation between down-
- #                 sampling scales
--#resampler = gaussian
-+#resampler = spline
- 
- ## rt-prio: (global)
- #  Sets the real-time priority value for the mixing thread. Not all drivers may
