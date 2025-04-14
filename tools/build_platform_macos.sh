@@ -9,11 +9,11 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$_PREFIX_
 
 _CMAKE_FLAGS_="-S .. -B . -DCMAKE_PREFIX_PATH=$_PREFIX_ -DCMAKE_INSTALL_PREFIX=$_PREFIX_ -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_PLATFORM_NO_VERSIONED_SONAME=TRUE -DCMAKE_OSX_ARCHITECTURES=arm64;x86_64 -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13"
 
-_SHARED_FLAGS_="-Os -flto -fvisibility=hidden -fno-strict-overflow -fno-stack-protector"
+_SHARED_FLAGS_="-Os -flto -fvisibility=hidden -fno-strict-overflow -fno-stack-protector -D_Float16=float"
 
 export CFLAGS="$_SHARED_FLAGS_"
 export CXXFLAGS="$_SHARED_FLAGS_ -fvirtual-function-elimination -fforce-emit-vtables -fstrict-vtable-pointers -fno-rtti -fno-exceptions"
-export LDFLAGS="-flto -Wl,-rpath,\$ORIGIN -Wl,--as-needed"
+export LDFLAGS="-flto -Wl,-rpath,\$ORIGIN"
 
 cd "$_ROOT_/SDL"
 mkdir build
@@ -71,12 +71,12 @@ cmake $_CMAKE_FLAGS_ -DBUILD_SHARED_LIBS=ON -DOP_DISABLE_HTTP=ON -DOP_DISABLE_EX
 cmake --build . --parallel
 cmake --install .
 
-export CXXFLAGS="$CXXFLAGS -frtti -fexceptions"
+export CXXFLAGS="$CXXFLAGS -fwhole-program-vtables -frtti -fexceptions"
 
 cd "$_ROOT_/openal-soft"
 mkdir build
 cd build
 rm CMakeCache.txt
-cmake $_CMAKE_FLAGS_ -DBUILD_SHARED_LIBS=ON -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DALSOFT_EXAMPLES=OFF
+cmake $_CMAKE_FLAGS_ -DBUILD_SHARED_LIBS=ON -DALSOFT_BACKEND_JACK=OFF -DALSOFT_BACKEND_OSS=OFF -DALSOFT_BACKEND_WAVE=OFF -DALSOFT_EXAMPLES=OFF -DALSOFT_TESTS=OFF -DALSOFT_UTILS=OFF
 cmake --build . --parallel
 cmake --install .
