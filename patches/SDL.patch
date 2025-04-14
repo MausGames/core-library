@@ -211,69 +211,6 @@ index 4127ac06c..395c91229 100644
  
  
  /**
-diff --git a/include/SDL3/SDL_revision.h b/include/SDL3/SDL_revision.h
-index f0f57cd59..db9618a7f 100644
---- a/include/SDL3/SDL_revision.h
-+++ b/include/SDL3/SDL_revision.h
-@@ -11,46 +11,29 @@
-   freely, subject to the following restrictions:
- 
-   1. The origin of this software must not be misrepresented; you must not
--  claim that you wrote the original software. If you use this software
--  in a product, an acknowledgment in the product documentation would be
--  appreciated but is not required.
-+     claim that you wrote the original software. If you use this software
-+     in a product, an acknowledgment in the product documentation would be
-+     appreciated but is not required.
-   2. Altered source versions must be plainly marked as such, and must not be
--  misrepresented as being the original software.
-+     misrepresented as being the original software.
-   3. This notice may not be removed or altered from any source distribution.
- */
- 
--/* WIKI CATEGORY: Version */
--
--/*
-- * SDL_revision.h contains the SDL revision, which might be defined on the
-- * compiler command line, or generated right into the header itself by the
-- * build system.
-+/**
-+ *  \file SDL_revision.h
-+ *
-+ *  Header file containing the SDL revision.
-  */
- 
- #ifndef SDL_revision_h_
- #define SDL_revision_h_
- 
--#ifdef SDL_WIKI_DOCUMENTATION_SECTION
-+/* #undef SDL_VENDOR_INFO */
- 
--/**
-- * This macro is a string describing the source at a particular point in
-- * development.
-- *
-- * This string is often generated from revision control's state at build time.
-- *
-- * This string can be quite complex and does not follow any standard. For
-- * example, it might be something like "SDL-prerelease-3.1.1-47-gf687e0732".
-- * It might also be user-defined at build time, so it's best to treat it as a
-- * clue in debugging forensics and not something the app will parse in any
-- * way.
-- *
-- * \since This macro is available since SDL 3.2.0.
-- */
--#define SDL_REVISION "Some arbitrary string decided at SDL build time"
--#elif defined(SDL_VENDOR_INFO)
--#define SDL_REVISION SDL_VENDOR_INFO
-+#ifdef SDL_VENDOR_INFO
-+#define SDL_REVISION "SDL3-3.2.8-release-3.2.8 (" SDL_VENDOR_INFO ")"
- #else
--#define SDL_REVISION ""
-+#define SDL_REVISION "SDL3-3.2.8-release-3.2.8"
- #endif
- 
- #endif /* SDL_revision_h_ */
 diff --git a/include/SDL3/SDL_video.h b/include/SDL3/SDL_video.h
 index a7afc3267..be5c8d2c3 100644
 --- a/include/SDL3/SDL_video.h
@@ -586,10 +523,10 @@ index 989f3b9c4..fd663c1eb 100644
      size_t size_read;
      char *data = NULL, *newdata;
 diff --git a/src/joystick/SDL_gamepad.c b/src/joystick/SDL_gamepad.c
-index 8486865bf..f64e5b98f 100644
+index 9e8659d64..bbbac4f45 100644
 --- a/src/joystick/SDL_gamepad.c
 +++ b/src/joystick/SDL_gamepad.c
-@@ -2263,6 +2263,24 @@ char **SDL_GetGamepadMappings(int *count)
+@@ -2265,6 +2265,24 @@ char **SDL_GetGamepadMappings(int *count)
      return result;
  }
  
@@ -614,6 +551,23 @@ index 8486865bf..f64e5b98f 100644
  /*
   * Get the mapping string for this GUID
   */
+diff --git a/src/joystick/SDL_joystick.c b/src/joystick/SDL_joystick.c
+index 78c64b7f6..f3564bf51 100644
+--- a/src/joystick/SDL_joystick.c
++++ b/src/joystick/SDL_joystick.c
+@@ -1122,7 +1122,12 @@ SDL_Joystick *SDL_OpenJoystick(SDL_JoystickID instance_id)
+     joystick->attached = true;
+     joystick->led_expiration = SDL_GetTicks();
+     joystick->battery_percent = -1;
++
++#ifdef SDL_JOYSTICK_VIRTUAL
+     joystick->is_virtual = (driver == &SDL_VIRTUAL_JoystickDriver);
++#else
++    joystick->is_virtual = false;
++#endif
+ 
+     if (!driver->Open(joystick, device_index)) {
+         SDL_SetObjectValid(joystick, SDL_OBJECT_TYPE_JOYSTICK, false);
 diff --git a/src/video/SDL_blit_slow.c b/src/video/SDL_blit_slow.c
 index d0dd4cf32..bca1e1fbf 100644
 --- a/src/video/SDL_blit_slow.c
@@ -739,6 +693,19 @@ index 86502549b..a0f4c644f 100644
          if (SDL_EGL_HasExtension(_this, SDL_EGL_DISPLAY_EXTENSION, "EGL_KHR_create_context_no_error")) {
              attribs[attr++] = EGL_CONTEXT_OPENGL_NO_ERROR_KHR;
              attribs[attr++] = _this->gl_config.no_error;
+diff --git a/src/video/SDL_video.c b/src/video/SDL_video.c
+index 725bbc80c..4d0a7d1c4 100644
+--- a/src/video/SDL_video.c
++++ b/src/video/SDL_video.c
+@@ -1396,7 +1396,7 @@ bool SDL_GetClosestFullscreenDisplayMode(SDL_DisplayID displayID, int w, int h,
+             continue;
+         }
+         if (closest) {
+-            float current_aspect_ratio = (float)mode->w / mode->h;
++            float current_aspect_ratio = (float)mode->w * (1.0f / (float)mode->h);
+             float closest_aspect_ratio = (float)closest->w / closest->h;
+             if (SDL_fabsf(aspect_ratio - closest_aspect_ratio) < SDL_fabsf(aspect_ratio - current_aspect_ratio)) {
+                 // The mode we already found has a better aspect ratio match
 diff --git a/src/video/wayland/SDL_waylandopengles.c b/src/video/wayland/SDL_waylandopengles.c
 index ac2b06dd0..ee05586d9 100644
 --- a/src/video/wayland/SDL_waylandopengles.c
