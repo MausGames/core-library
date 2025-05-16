@@ -212,7 +212,7 @@ index 4127ac06c..395c91229 100644
  
  /**
 diff --git a/include/SDL3/SDL_video.h b/include/SDL3/SDL_video.h
-index a7afc3267..be5c8d2c3 100644
+index 877b9adde..87781f912 100644
 --- a/include/SDL3/SDL_video.h
 +++ b/include/SDL3/SDL_video.h
 @@ -1,3 +1,6 @@
@@ -222,7 +222,7 @@ index a7afc3267..be5c8d2c3 100644
  /*
    Simple DirectMedia Layer
    Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
-@@ -3239,6 +3242,13 @@ extern SDL_DECLSPEC bool SDLCALL SDL_GL_SetSwapInterval(int interval);
+@@ -3251,6 +3254,13 @@ extern SDL_DECLSPEC bool SDLCALL SDL_GL_SetSwapInterval(int interval);
   */
  extern SDL_DECLSPEC bool SDLCALL SDL_GL_GetSwapInterval(int *interval);
  
@@ -461,6 +461,22 @@ index 442751764..dfd419a51 100644
 +#define SDL_CAMERA_DISABLED 1
  
  #endif /* SDL_build_config_windows_h_ */
+diff --git a/src/cpuinfo/SDL_cpuinfo.c b/src/cpuinfo/SDL_cpuinfo.c
+index b83653280..f33f88832 100644
+--- a/src/cpuinfo/SDL_cpuinfo.c
++++ b/src/cpuinfo/SDL_cpuinfo.c
+@@ -659,6 +659,11 @@ int SDL_GetNumLogicalCPUCores(void)
+             // Meaning that the New3DS has 3 available core, and the Old3DS only one.
+             SDL_NumLogicalCPUCores = isNew3DS ? 4 : 2;
+         }
++#endif
++#ifdef SDL_PLATFORM_PRIVATE
++        if (SDL_NumLogicalCPUCores <= 0) {
++            SDL_NumLogicalCPUCores = SDL_PRIVATE_CPU_CORES;
++        }
+ #endif
+         // There has to be at least 1, right? :)
+         if (SDL_NumLogicalCPUCores <= 0) {
 diff --git a/src/dynapi/SDL_dynapi.sym b/src/dynapi/SDL_dynapi.sym
 index 73f34843d..8d64f9367 100644
 --- a/src/dynapi/SDL_dynapi.sym
@@ -491,6 +507,35 @@ index e86ac2a32..56136d942 100644
  SDL_DYNAPI_PROC(void,SDL_UpdateTrays,(void),(),)
  SDL_DYNAPI_PROC(bool,SDL_StretchSurface,(SDL_Surface *a,const SDL_Rect *b,SDL_Surface *c,const SDL_Rect *d,SDL_ScaleMode e),(a,b,c,d,e),return)
 +SDL_DYNAPI_PROC(int,SDL_GetGamepadNumMappings,(void),(),return)
+diff --git a/src/events/SDL_events.c b/src/events/SDL_events.c
+index eff205f71..a4a86d6ec 100644
+--- a/src/events/SDL_events.c
++++ b/src/events/SDL_events.c
+@@ -1908,23 +1908,7 @@ void SDL_SendAppEvent(SDL_EventType eventType)
+         event.type = eventType;
+         event.common.timestamp = 0;
+ 
+-        switch (eventType) {
+-        case SDL_EVENT_TERMINATING:
+-        case SDL_EVENT_LOW_MEMORY:
+-        case SDL_EVENT_WILL_ENTER_BACKGROUND:
+-        case SDL_EVENT_DID_ENTER_BACKGROUND:
+-        case SDL_EVENT_WILL_ENTER_FOREGROUND:
+-        case SDL_EVENT_DID_ENTER_FOREGROUND:
+-            // We won't actually queue this event, it needs to be handled in this call stack by an event watcher
+-            if (SDL_EventLoggingVerbosity > 0) {
+-                SDL_LogEvent(&event);
+-            }
+-            SDL_CallEventWatchers(&event);
+-            break;
+-        default:
+-            SDL_PushEvent(&event);
+-            break;
+-        }
++        SDL_PushEvent(&event);
+     }
+ }
+ 
 diff --git a/src/io/SDL_iostream.c b/src/io/SDL_iostream.c
 index 989f3b9c4..fd663c1eb 100644
 --- a/src/io/SDL_iostream.c
@@ -523,10 +568,10 @@ index 989f3b9c4..fd663c1eb 100644
      size_t size_read;
      char *data = NULL, *newdata;
 diff --git a/src/joystick/SDL_gamepad.c b/src/joystick/SDL_gamepad.c
-index 9e8659d64..bbbac4f45 100644
+index 86dd06276..31cb4d571 100644
 --- a/src/joystick/SDL_gamepad.c
 +++ b/src/joystick/SDL_gamepad.c
-@@ -2265,6 +2265,24 @@ char **SDL_GetGamepadMappings(int *count)
+@@ -2268,6 +2268,24 @@ char **SDL_GetGamepadMappings(int *count)
      return result;
  }
  
@@ -551,23 +596,6 @@ index 9e8659d64..bbbac4f45 100644
  /*
   * Get the mapping string for this GUID
   */
-diff --git a/src/joystick/SDL_joystick.c b/src/joystick/SDL_joystick.c
-index 78c64b7f6..f3564bf51 100644
---- a/src/joystick/SDL_joystick.c
-+++ b/src/joystick/SDL_joystick.c
-@@ -1122,7 +1122,12 @@ SDL_Joystick *SDL_OpenJoystick(SDL_JoystickID instance_id)
-     joystick->attached = true;
-     joystick->led_expiration = SDL_GetTicks();
-     joystick->battery_percent = -1;
-+
-+#ifdef SDL_JOYSTICK_VIRTUAL
-     joystick->is_virtual = (driver == &SDL_VIRTUAL_JoystickDriver);
-+#else
-+    joystick->is_virtual = false;
-+#endif
- 
-     if (!driver->Open(joystick, device_index)) {
-         SDL_SetObjectValid(joystick, SDL_OBJECT_TYPE_JOYSTICK, false);
 diff --git a/src/video/SDL_blit_slow.c b/src/video/SDL_blit_slow.c
 index d0dd4cf32..bca1e1fbf 100644
 --- a/src/video/SDL_blit_slow.c
@@ -694,7 +722,7 @@ index 86502549b..a0f4c644f 100644
              attribs[attr++] = EGL_CONTEXT_OPENGL_NO_ERROR_KHR;
              attribs[attr++] = _this->gl_config.no_error;
 diff --git a/src/video/SDL_video.c b/src/video/SDL_video.c
-index 725bbc80c..4d0a7d1c4 100644
+index abeb2cb6b..e815b08bb 100644
 --- a/src/video/SDL_video.c
 +++ b/src/video/SDL_video.c
 @@ -1396,7 +1396,7 @@ bool SDL_GetClosestFullscreenDisplayMode(SDL_DisplayID displayID, int w, int h,
